@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "twxs.cmake",
+    "ms-vscode.cmake-tools",
+    "cheshirekow.cmake-format",
+    "streetsidesoftware.code-spell-checker",
+    "jaehyunshim.vscode-ros2",
+    "redhat.vscode-xml"
+  ]
+}

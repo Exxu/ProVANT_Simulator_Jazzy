@@ -1,0 +1,4 @@
+string group_namespace
+---
+bool result
+string message

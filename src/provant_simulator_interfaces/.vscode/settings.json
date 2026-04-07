@@ -1,0 +1,6 @@
+{
+  "cmake.buildDirectory": "${env:COLCON_PREFIX_PATH}/../build/${workspaceFolderBasename}",
+  "cmake.configureSettings": {
+    "CMAKE_PREFIX_PATH": "${env:CMAKE_PREFIX_PATH}:${env:AMENT_PREFIX_PATH}",
+  },
+}
