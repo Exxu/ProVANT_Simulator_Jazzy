@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<!--
+This file is part of the ProVANT simulator project.
+Licensed under the terms of the MIT open source license. More details at
+https: //github.com/Guiraffo/ProVANT-Simulator/blob/master/LICENSE.md
+Copyright 2022 Guilherme V. Raffo
+-->
+<package format="3">
+  <name>provant_simulator_control_group_manager</name>
+  <version>0.1.0</version>
+  <description>The ProVANT Simulator Control Group Manager package contains the control group manager node. This node
+    coordinates the execution of a control group manager and notifies the simulation manager when a control group is
+    ready to proceed.
+  </description>
+
+  <maintainer email="junioeduardo.morais@ieee.org">Júnio Eduardo de Morais Aquino</maintainer>
+
+  <license>MIT</license>
+
+  <url type="website">http://provant.eng.ufmg.br/provantsimulator</url>
+  <url type="repository">https://github.com/Guiraffo/ProVANT-Simulator.git</url>
+  <url type="bugtracker">https://github.com/Guiraffo/ProVANT-Simulator/issues</url>
+
+  <author email="junioeduardo.morais@ieee.org">Júnio Eduardo de Morais Aquino</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_srvs</depend>
+  <depend>provant_simulator_interfaces</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>provant_simulator_linters</test_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
