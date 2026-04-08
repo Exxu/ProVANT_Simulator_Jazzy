@@ -15,9 +15,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(provant_simulator_interfaces REQUIRED)
 
 # Gazebo Harmonic
+find_package(gz_sim_vendor REQUIRED)
+find_package(gz_plugin_vendor REQUIRED)
+
 find_package(gz-sim8 REQUIRED)
 find_package(gz-plugin2 REQUIRED)
 
@@ -44,6 +48,10 @@ set(PLUGIN_TARGETS "")
 add_subdirectory(plugins/step_manager_system)
 ament_export_libraries(provant_step_manager_system)
 set(PLUGIN_TARGETS ${PLUGIN_TARGETS} provant_step_manager_system)
+
+add_subdirectory(plugins/wait_until_ready_system)
+ament_export_libraries(provant_wait_until_ready_system)
+set(PLUGIN_TARGETS ${PLUGIN_TARGETS} provant_wait_until_ready_system)
 
 # add_subdirectory(plugins/wait_until_ready)
 # ament_export_libraries(provant_quadrotor_state_sensor_plugin)
