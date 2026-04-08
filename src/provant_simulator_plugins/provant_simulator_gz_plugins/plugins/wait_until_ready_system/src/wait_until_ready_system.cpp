@@ -22,6 +22,22 @@ WaitUntilReadySystem::~WaitUntilReadySystem()
 
   // Release any blocked wait during shutdown.
   stepPermit_.post();
+
+  if (executor_) {
+    executor_->cancel();
+  }
+
+  if (rosSpinThread_.joinable()) {
+    rosSpinThread_.join();
+  }
+
+  if (executor_ && rosNode_) {
+    executor_->remove_node(rosNode_);
+  }
+
+  readySub_.reset();
+  rosNode_.reset();
+  executor_.reset();
 }
 
 void WaitUntilReadySystem::parseSdf(const std::shared_ptr<const sdf::Element> & sdf)
@@ -37,12 +53,9 @@ void WaitUntilReadySystem::parseSdf(const std::shared_ptr<const sdf::Element> & 
   if (sdf->HasElement("ready_topic")) {
     readyTopic_ = sdf->Get<std::string>("ready_topic");
   }
-}
 
-void WaitUntilReadySystem::spinSomeRos()
-{
-  if (rosNode_) {
-    rclcpp::spin_some(rosNode_);
+  if (sdf->HasElement("warmup_cycles")) {
+    warmupCycles_ = sdf->Get<uint64_t>("warmup_cycles");
   }
 }
 
@@ -67,12 +80,20 @@ void WaitUntilReadySystem::Configure(
     rclcpp::QoS(10),
     std::bind(&WaitUntilReadySystem::onReadyMsg, this, std::placeholders::_1));
 
+  executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
+  executor_->add_node(rosNode_);
+
+  rosSpinThread_ = std::thread([this]() {
+    executor_->spin();
+  });
+
   configured_.store(true);
 
   RCLCPP_INFO(
     rosNode_->get_logger(),
-    "WaitUntilReadySystem configured. ready_topic='%s'",
-    readyTopic_.c_str());
+    "WaitUntilReadySystem configured. ready_topic='%s', warmup_cycles=%lu",
+    readyTopic_.c_str(),
+    static_cast<unsigned long>(warmupCycles_));
 }
 
 void WaitUntilReadySystem::onReadyMsg(const std_msgs::msg::Empty::SharedPtr /*msg*/)
@@ -81,22 +102,27 @@ void WaitUntilReadySystem::onReadyMsg(const std_msgs::msg::Empty::SharedPtr /*ms
     return;
   }
 
+  if (!barrierArmed_.load()) {
+    RCLCPP_DEBUG(
+      rosNode_->get_logger(),
+      "Ready received during warmup. Ignoring because barrier is not armed yet.");
+    return;
+  }
+
+  std::lock_guard<std::mutex> lock(stateMutex_);
+
   // Do not accumulate multiple pending permissions.
-  bool expected = false;
-  if (permitPending_.compare_exchange_strong(expected, true)) {
+  if (!permitPending_.load()) {
+    permitPending_.store(true);
     stepPermit_.post();
 
-    if (rosNode_) {
-      RCLCPP_DEBUG(
-        rosNode_->get_logger(),
-        "Ready received. Released one waiting simulation step.");
-    }
+    RCLCPP_INFO(
+      rosNode_->get_logger(),
+      "Ready received. Released one waiting simulation step.");
   } else {
-    if (rosNode_) {
-      RCLCPP_DEBUG(
-        rosNode_->get_logger(),
-        "Ready received, but a permit is already pending. Ignoring duplicate permit.");
-    }
+    RCLCPP_DEBUG(
+      rosNode_->get_logger(),
+      "Ready received, but a permit is already pending. Ignoring duplicate permit.");
   }
 }
 
@@ -109,33 +135,39 @@ void WaitUntilReadySystem::PreUpdate(
   }
 
   if (shutdownRequested_.load() || info.paused) {
-    spinSomeRos();
     return;
   }
 
-  spinSomeRos();
+  // During warmup, do not block the simulation.
+  if (!barrierArmed_.load()) {
+    return;
+  }
 
-  // If a step is already in progress, there is nothing to do here.
+  // If one step is already in progress, just let this frame continue.
   if (stepInProgress_.load()) {
     return;
   }
 
-  // Barrier: wait until a permit exists.
   while (!shutdownRequested_.load()) {
-    bool expected = true;
-    if (permitPending_.compare_exchange_strong(expected, false)) {
-      stepInProgress_.store(true);
+    {
+      std::lock_guard<std::mutex> lock(stateMutex_);
 
-      if (rosNode_) {
+      if (permitPending_.load()) {
+        permitPending_.store(false);
+        stepInProgress_.store(true);
+
         RCLCPP_DEBUG(
           rosNode_->get_logger(),
           "Consumed one permit in PreUpdate. Allowing exactly one simulation step.");
+        return;
       }
-      return;
     }
 
     stepPermit_.wait();
-    spinSomeRos();
+
+    if (shutdownRequested_.load() || info.paused) {
+      return;
+    }
   }
 }
 
@@ -147,19 +179,29 @@ void WaitUntilReadySystem::PostUpdate(
     return;
   }
 
-  spinSomeRos();
-
   if (shutdownRequested_.load() || info.paused) {
     return;
   }
 
-  // If one step was allowed through PreUpdate, close the barrier again here.
-  if (stepInProgress_.exchange(false)) {
-    if (rosNode_) {
-      RCLCPP_DEBUG(
+  if (!barrierArmed_.load()) {
+    const auto count = postUpdateCount_.fetch_add(1) + 1;
+
+    if (count >= warmupCycles_) {
+      barrierArmed_.store(true);
+
+      RCLCPP_INFO(
         rosNode_->get_logger(),
-        "Completed one simulation step in PostUpdate. Barrier closed again.");
+        "Barrier armed after %lu PostUpdate cycles.",
+        static_cast<unsigned long>(count));
     }
+
+    return;
+  }
+
+  if (stepInProgress_.exchange(false)) {
+    RCLCPP_DEBUG(
+      rosNode_->get_logger(),
+      "Completed one simulation step in PostUpdate. Barrier closed again.");
   }
 }
 

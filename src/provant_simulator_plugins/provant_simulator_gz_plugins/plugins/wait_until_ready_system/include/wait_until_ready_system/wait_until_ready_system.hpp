@@ -3,13 +3,16 @@
 
 #include <atomic>
 #include <memory>
+#include <mutex>
 #include <string>
+#include <thread>
 
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
 #include <gz/sim/System.hh>
 
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp/executors/single_threaded_executor.hpp>
 #include <std_msgs/msg/empty.hpp>
 
 namespace provant::simulator
@@ -42,10 +45,11 @@ public:
 private:
   void onReadyMsg(const std_msgs::msg::Empty::SharedPtr msg);
   void parseSdf(const std::shared_ptr<const sdf::Element> & sdf);
-  void spinSomeRos();
 
   std::shared_ptr<rclcpp::Node> rosNode_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr readySub_;
+  std::shared_ptr<rclcpp::executors::SingleThreadedExecutor> executor_;
+  std::thread rosSpinThread_;
 
   std::string rosNodeName_{"provant_wait_until_ready_system"};
   std::string readyTopic_{"/provant_simulator/ready"};
@@ -60,6 +64,13 @@ private:
 
   // True after PreUpdate consumes a permit and until PostUpdate closes the barrier again.
   std::atomic<bool> stepInProgress_{false};
+
+  // Warmup phase to avoid blocking Gazebo internal startup too early.
+  std::atomic<bool> barrierArmed_{false};
+  std::atomic<uint64_t> postUpdateCount_{0};
+  uint64_t warmupCycles_{10};
+
+  std::mutex stateMutex_;
 };
 
 }  // namespace provant::simulator

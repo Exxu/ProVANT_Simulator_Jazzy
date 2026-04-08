@@ -25,7 +25,7 @@ namespace provant::simulator
 class StepManagerSystem final
   : public gz::sim::System,
     public gz::sim::ISystemConfigure,
-    public gz::sim::ISystemPostUpdate,
+    public gz::sim::ISystemPreUpdate,
     public gz::sim::ISystemReset
 {
 public:
@@ -38,9 +38,9 @@ public:
     gz::sim::EntityComponentManager& ecm,
     gz::sim::EventManager& eventMgr) override;
 
-  void PostUpdate(
+  void PreUpdate(
     const gz::sim::UpdateInfo& info,
-    const gz::sim::EntityComponentManager& ecm) override;
+    gz::sim::EntityComponentManager& ecm) override;
 
   void Reset(
     const gz::sim::UpdateInfo& info,

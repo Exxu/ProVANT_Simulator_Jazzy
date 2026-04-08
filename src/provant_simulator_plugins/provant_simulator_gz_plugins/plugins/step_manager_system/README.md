@@ -58,7 +58,7 @@ In Gazebo Harmonic, these concerns are separated:
 It needs direct access to:
 
 - `Configure`
-- `PostUpdate`
+- `PreUpdate`
 - `Reset`
 
 These hooks allow the plugin to observe:
@@ -184,9 +184,13 @@ The plugin operates mainly in two phases:
 
 ### 1. Normal simulation observation
 
-During `PostUpdate(...)`, the plugin reads the Gazebo update information and publishes a `StepClock` message whenever a new iteration is observed.
+During `PreUpdate(...)`, the plugin reads the Gazebo update information and publishes a `StepClock` message whenever a new iteration is observed.
 
 This is the regular temporal feedback path.
+
+The published `step_clock` corresponds to the temporal state visible at the beginning of the current simulation iteration.
+
+That makes the behavior consistent with the intended simulator temporal contract, where the control side reacts to the next discrete simulation instant after a released step.
 
 ### 2. Reset observation
 
@@ -196,7 +200,7 @@ During `Reset(...)`, the plugin:
 - schedules a reset notification to ROS 2
 - marks that a first post-reset clock must be published
 
-Then, in the next useful `PostUpdate(...)`, it:
+Then, in the next useful `PreUpdate(...)`, it:
 
 - sends the reset notification
 - forces publication of a post-reset `step_clock`
@@ -218,6 +222,26 @@ To avoid that, `provant_step_manager_system` guarantees that after reset there i
 ```
 
 This is essential to preserve the temporal semantics expected by the original simulator.
+
+---
+
+## Temporal semantics of `step_clock`
+
+`provant_step_manager_system` does not request steps.
+
+Instead, it reports the temporal state observed inside Gazebo after the simulator control side has released progression.
+
+In the migrated architecture, the intended sequence is:
+
+```text
+control group ready
+-> simulation_manager publishes /provant_simulator/step
+-> provant_step_command_bridge requests one simulation step
+-> Gazebo advances
+-> provant_step_manager_system publishes /provant_simulator/step_clock in PreUpdate
+```
+
+This means the published `step_clock` is the observable temporal reference used by the control side to process the next discrete simulation instant.
 
 ---
 
@@ -259,67 +283,27 @@ Defines the ROS 2 service called when the world is reset.
 
 ---
 
-## What this module does not do
+## Relationship with other packages
 
-This plugin does **not**:
+`provant_step_manager_system` is not a standalone timing controller.
 
-- request simulation steps
-- decide when the world should advance
-- coordinate controller readiness
-- manage simulation state transitions
-
-Those responsibilities belong to:
+It works together with:
 
 - `simulation_manager`
 - `provant_step_command_bridge`
 
----
+Their responsibilities are:
 
-## Relationship with `provant_step_command_bridge`
+- `simulation_manager`
+  - decides when the simulator may advance
 
-`provant_step_command_bridge` is the **command-side** bridge.
+- `provant_step_command_bridge`
+  - requests one discrete step from Gazebo
 
-It receives:
+- `provant_step_manager_system`
+  - publishes the observable simulation clock and reset notification
 
-```text
-/provant_simulator/step
-```
-
-and requests one world step from Gazebo.
-
-After Gazebo performs that step, `provant_step_manager_system` observes the result and publishes:
-
-```text
-/provant_simulator/step_clock
-```
-
-So the relationship is:
-
-```text
-provant_step_command_bridge
-  -> requests one world step
-Gazebo Harmonic
-  -> advances the simulation
-provant_step_manager_system
-  -> publishes the resulting step_clock
-```
-
----
-
-## Relationship with `simulation_manager`
-
-`simulation_manager` is the temporal coordinator.
-
-It decides when the simulator should advance, usually after all registered groups are ready.
-
-Its role in the loop is:
-
-- publish `/provant_simulator/step`
-- wait for the resulting `/provant_simulator/step_clock`
-
-`provant_step_manager_system` is therefore the source of temporal confirmation that closes the simulator loop.
-
----
+Together, they close the simulator temporal loop in the migrated architecture.
 
 ## Expected startup condition
 
@@ -444,16 +428,3 @@ Its specific contribution to that migration is to reintroduce the **temporal obs
 It does not by itself replace the full legacy `step_manager`. Instead, it replaces the observation and reset-notification half of that behavior.
 
 ---
-
-## Summary
-
-`provant_step_manager_system` is the Gazebo Harmonic system plugin responsible for observing simulation time and reset events and exposing them back to ROS 2.
-
-In practical terms, it:
-
-- publishes `/provant_simulator/step_clock`
-- detects world resets
-- calls `/provant_simulator/reset`
-- guarantees a valid post-reset temporal observation
-
-This plugin is the observation-side counterpart of the new temporal architecture in Jazzy/Harmonic.

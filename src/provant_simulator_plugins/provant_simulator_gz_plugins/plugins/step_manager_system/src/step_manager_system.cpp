@@ -67,9 +67,9 @@ void StepManagerSystem::Configure(
     this->resetService_.c_str());
 }
 
-void StepManagerSystem::PostUpdate(
+void StepManagerSystem::PreUpdate(
   const gz::sim::UpdateInfo& info,
-  const gz::sim::EntityComponentManager& /*ecm*/)
+  gz::sim::EntityComponentManager& /*ecm*/)
 {
   if (!this->node_ || !this->stepClockPublisher_) {
     return;
@@ -260,7 +260,7 @@ GZ_ADD_PLUGIN(
   provant::simulator::StepManagerSystem,
   gz::sim::System,
   provant::simulator::StepManagerSystem::ISystemConfigure,
-  provant::simulator::StepManagerSystem::ISystemPostUpdate,
+  provant::simulator::StepManagerSystem::ISystemPreUpdate,
   provant::simulator::StepManagerSystem::ISystemReset)
 
 GZ_ADD_PLUGIN_ALIAS(

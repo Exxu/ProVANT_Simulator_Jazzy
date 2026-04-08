@@ -1,0 +1,196 @@
+Starting >>> provant_temporal_loop_tests
+UpdateCTestConfiguration  from :/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/CTestConfiguration.ini
+Parse Config file:/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/CTestConfiguration.ini
+   Site: richard-XPS-8960
+   Build name: (empty)
+ Add coverage exclude regular expressions.
+Create new tag: 20260408-1933 - Experimental
+UpdateCTestConfiguration  from :/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/CTestConfiguration.ini
+Parse Config file:/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/CTestConfiguration.ini
+Test project /home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: launch_temporal_loop_test.launch.py
+
+1: Test command: /usr/bin/python3 "-u" "/opt/ros/jazzy/share/ament_cmake_test/cmake/run_test.py" "/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/test_results/provant_temporal_loop_tests/launch_temporal_loop_test.launch.py.xunit.xml" "--package-name" "provant_temporal_loop_tests" "--output-file" "/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/launch_test/launch_temporal_loop_test.launch.py.txt" "--command" "/usr/bin/python3" "-m" "launch_testing.launch_test" "/home/richard/ProVANT/ProVANT_Simulator_Jazzy/src/provant_simulator_tests/provant_temporal_loop_tests/launch/temporal_loop_test.launch.py" "--junit-xml=/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/test_results/provant_temporal_loop_tests/launch_temporal_loop_test.launch.py.xunit.xml" "--package-name=provant_temporal_loop_tests"
+1: Working Directory: /home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests
+1: Test timeout computed to be: 50
+1: -- run_test.py: invoking following command in '/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests':
+1:  - /usr/bin/python3 -m launch_testing.launch_test /home/richard/ProVANT/ProVANT_Simulator_Jazzy/src/provant_simulator_tests/provant_temporal_loop_tests/launch/temporal_loop_test.launch.py --junit-xml=/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/test_results/provant_temporal_loop_tests/launch_temporal_loop_test.launch.py.xunit.xml --package-name=provant_temporal_loop_tests
+1: [INFO] [launch]: All log files can be found below /home/richard/.ros/log/2026-04-08-16-33-32-455134-richard-XPS-8960-56857
+1: [INFO] [launch]: Default logging verbosity is set to INFO
+1: [INFO] [gzserver-1]: process started with pid [56863]
+1: test_temporal_loop_reports_success (provant_temporal_loop_tests.TestTemporalLoopActive.test_temporal_loop_reports_success) ... [INFO] [provant_step_command_bridge-2]: process started with pid [56864]
+1: [INFO] [provant_simulator_simulation_manager_node-3]: process started with pid [56865]
+1: [INFO] [temporal_loop_tester_node-4]: process started with pid [56866]
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676812.636069710] [simulation_manager]: Initializing node.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676812.636960659] [simulation_manager]: Node initialized successfully.
+1: [temporal_loop_tester_node-4] [INFO] [1775676812.668931177] [temporal_loop_tester_node]: Tester started. total_cycles=5 request_period_ms=300 compute_delay_ms=20 startup_wait_ms=1500 world_name='temporal_loop_test' group_namespace='/test_group' expected_step_dt_ns=1000000 time_tolerance_ns=0
+1: [provant_step_command_bridge-2] [INFO] [1775676812.669136986] [provant_step_command_bridge]: StepCommandBridge started. step_topic='/provant_simulator/step', world_name='temporal_loop_test', control_service='/world/temporal_loop_test/control', timeout_ms=3000
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mLoading SDF world file[[0m[1;32m/home/richard/ProVANT/ProVANT_Simulator_Jazzy/install/provant_temporal_loop_tests/share/provant_temporal_loop_tests/worlds/temporal_loop_minimal.sdf[0m[1;32m].[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing entity system service on [[0m[1;32m/[0m[1;32mentity/system/add[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;36m[Dbg] [Physics.cc:899] [0m[1;36mLoaded [[0m[1;36mgz::physics::dartsim::Plugin[0m[1;36m] from library [[0m[1;36m/opt/ros/jazzy/opt/gz_physics_vendor/lib/gz-physics-7/engine-plugins/libgz-physics-dartsim-plugin.so[0m[1;36m][0m[1;36m[0m
+1: [gzserver-1] [1;36m[Dbg] [SystemManager.cc:80] [0m[1;36mLoaded system [[0m[1;36mgz::sim::systems::Physics[0m[1;36m] for entity [[0m[1;36m1[0m[1;36m][0m[1;36m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mCreate[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/create_multiple[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mCreate[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/create_multiple/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mRemove[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/remove[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mRemove[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/remove/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_pose[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_pose/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_pose_vector[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_pose_vector/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mLight configuration[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/light_config[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mLight configuration[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/light_config/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPhysics[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_physics[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPhysics[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_physics/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mSphericalCoordinates[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_spherical_coordinates[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mSphericalCoordinates[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/set_spherical_coordinates/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mEnable collision[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/enable_collision[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mEnable collision[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/enable_collision/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mDisable collision[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/disable_collision[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mDisable collision[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/disable_collision/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/visual_config[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/visual_config/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/wheel_slip[0m[1;32m] (async)[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/temporal_loop_test/wheel_slip/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+1: [gzserver-1] [INFO] [1775676812.832671275] [provant_step_manager_system]: StepManagerSystem configured. step_clock_topic='/provant_simulator/step_clock', reset_service='/provant_simulator/reset'
+1: [temporal_loop_tester_node-4] [INFO] [1775676814.682932864] [temporal_loop_tester_node]: Initial step_clock received: step=2 time_ns=1000000
+1: [gzserver-1] [INFO] [1775676814.707447294] [gzserver]: InitializeCanonicalLinks
+1: [gzserver-1] [INFO] [1775676814.707495491] [gzserver]: Creating services on gzserver
+1: [gzserver-1] [INFO] [1775676814.708362712] [gzserver]: Created service /gzserver/delete_entity
+1: [gzserver-1] [INFO] [1775676814.708567680] [gzserver]: Created service /gzserver/get_entities
+1: [gzserver-1] [INFO] [1775676814.708730754] [gzserver]: Created service /gzserver/get_entity_info
+1: [gzserver-1] [INFO] [1775676814.708921438] [gzserver]: Created service /gzserver/get_entity_state
+1: [gzserver-1] [INFO] [1775676814.709056850] [gzserver]: Created service /gzserver/get_entities_states
+1: [gzserver-1] [INFO] [1775676814.709214970] [gzserver]: Created service /gzserver/get_simulation_state
+1: [gzserver-1] [INFO] [1775676814.709366055] [gzserver]: Created service /gzserver/get_simulator_features
+1: [gzserver-1] [INFO] [1775676814.709527537] [gzserver]: Created service /gzserver/reset_simulation
+1: [gzserver-1] [INFO] [1775676814.709677616] [gzserver]: Created service /gzserver/set_entity_state
+1: [gzserver-1] [INFO] [1775676814.709851294] [gzserver]: Created service /gzserver/set_simulation_state
+1: [gzserver-1] [INFO] [1775676814.710011247] [gzserver]: Created service /gzserver/spawn_entity
+1: [gzserver-1] [INFO] [1775676814.710139921] [gzserver]: Created service /gzserver/step_simulation
+1: [gzserver-1] [INFO] [1775676814.711777653] [gzserver]: Created action /gzserver/simulate_steps
+1: [temporal_loop_tester_node-4] [INFO] [1775676814.874283743] [temporal_loop_tester_node]: Pause requested. Waiting for step stabilization from step=34.
+1: [temporal_loop_tester_node-4] [INFO] [1775676815.571930647] [temporal_loop_tester_node]: World appears paused. Registering control group '/test_group'.
+1: [temporal_loop_tester_node-4] [INFO] [1775676815.622751433] [temporal_loop_tester_node]: Registering group '/test_group' in simulation_manager.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676815.622958600] [simulation_manager]: Creating ready subscription on topic '/test_group/ready'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676815.623568245] [simulation_manager]: Created ready subscription with resolved topic '/test_group/ready'.
+1: [temporal_loop_tester_node-4] [INFO] [1775676815.673405479] [temporal_loop_tester_node]: Group registration succeeded.
+1: [temporal_loop_tester_node-4] [INFO] [1775676815.724031408] [temporal_loop_tester_node]: Requested simulation_manager state 'start'.
+1: [temporal_loop_tester_node-4] [INFO] [1775676815.734119629] [temporal_loop_tester_node]: simulation_manager published state='running'
+1: [temporal_loop_tester_node-4] [INFO] [1775676815.774714579] [temporal_loop_tester_node]: simulation_manager is running. Starting cycles.
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.078478383] [temporal_loop_tester_node]: Published /test_group/ready for cycle 1/5. expected_base_step=94 expected_base_time_ns=93000000 expected_manager_step_count=1
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.078605939] [simulation_manager]: setReady called for group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.078621228] [simulation_manager]: Received ready from group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.078623313] [simulation_manager]: stepIfRequired() called.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.078625512] [simulation_manager]: Publishing /provant_simulator/step.
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.088629428] [temporal_loop_tester_node]: simulation_manager published /provant_simulator/step. count=1
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.189911644] [temporal_loop_tester_node]: Observed candidate step_clock for cycle 1/5: step=95 delta_step=1 time_ns=94000000 delta_time_ns=1000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.189925042] [temporal_loop_tester_node]: Cycle 1/5 succeeded. manager_step_count=1 base_step=94 new_step=95 base_time_ns=93000000 new_time_ns=94000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.220289641] [temporal_loop_tester_node]: Finished simulated control computation for cycle 1/5. Ready for next /ready publish.
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.524382142] [temporal_loop_tester_node]: Published /test_group/ready for cycle 2/5. expected_base_step=95 expected_base_time_ns=94000000 expected_manager_step_count=2
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.524591028] [simulation_manager]: setReady called for group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.524608354] [simulation_manager]: Received ready from group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.524610499] [simulation_manager]: stepIfRequired() called.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.524612527] [simulation_manager]: Publishing /provant_simulator/step.
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.534563313] [temporal_loop_tester_node]: simulation_manager published /provant_simulator/step. count=2
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.534581198] [temporal_loop_tester_node]: Observed candidate step_clock for cycle 2/5: step=96 delta_step=1 time_ns=95000000 delta_time_ns=1000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.534584766] [temporal_loop_tester_node]: Cycle 2/5 succeeded. manager_step_count=2 base_step=95 new_step=96 base_time_ns=94000000 new_time_ns=95000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.575083897] [temporal_loop_tester_node]: Finished simulated control computation for cycle 2/5. Ready for next /ready publish.
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.878862183] [temporal_loop_tester_node]: Published /test_group/ready for cycle 3/5. expected_base_step=96 expected_base_time_ns=95000000 expected_manager_step_count=3
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.879006979] [simulation_manager]: setReady called for group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.879022394] [simulation_manager]: Received ready from group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.879024557] [simulation_manager]: stepIfRequired() called.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676816.879026811] [simulation_manager]: Publishing /provant_simulator/step.
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.888947387] [temporal_loop_tester_node]: simulation_manager published /provant_simulator/step. count=3
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.888964699] [temporal_loop_tester_node]: Observed candidate step_clock for cycle 3/5: step=97 delta_step=1 time_ns=96000000 delta_time_ns=1000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.888968509] [temporal_loop_tester_node]: Cycle 3/5 succeeded. manager_step_count=3 base_step=96 new_step=97 base_time_ns=95000000 new_time_ns=96000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676816.919307155] [temporal_loop_tester_node]: Finished simulated control computation for cycle 3/5. Ready for next /ready publish.
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.222623375] [temporal_loop_tester_node]: Published /test_group/ready for cycle 4/5. expected_base_step=97 expected_base_time_ns=96000000 expected_manager_step_count=4
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.222822745] [simulation_manager]: setReady called for group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.222836767] [simulation_manager]: Received ready from group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.222838846] [simulation_manager]: stepIfRequired() called.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.222843865] [simulation_manager]: Publishing /provant_simulator/step.
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.232701454] [temporal_loop_tester_node]: simulation_manager published /provant_simulator/step. count=4
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.232714113] [temporal_loop_tester_node]: Observed candidate step_clock for cycle 4/5: step=98 delta_step=1 time_ns=97000000 delta_time_ns=1000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.232717150] [temporal_loop_tester_node]: Cycle 4/5 succeeded. manager_step_count=4 base_step=97 new_step=98 base_time_ns=96000000 new_time_ns=97000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.273180812] [temporal_loop_tester_node]: Finished simulated control computation for cycle 4/5. Ready for next /ready publish.
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.577966821] [temporal_loop_tester_node]: Published /test_group/ready for cycle 5/5. expected_base_step=98 expected_base_time_ns=97000000 expected_manager_step_count=5
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.578112246] [simulation_manager]: setReady called for group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.578132489] [simulation_manager]: Received ready from group '/test_group'.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.578134912] [simulation_manager]: stepIfRequired() called.
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.578137449] [simulation_manager]: Publishing /provant_simulator/step.
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.588061680] [temporal_loop_tester_node]: simulation_manager published /provant_simulator/step. count=5
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.588080767] [temporal_loop_tester_node]: Observed candidate step_clock for cycle 5/5: step=99 delta_step=1 time_ns=98000000 delta_time_ns=1000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.588084892] [temporal_loop_tester_node]: Cycle 5/5 succeeded. manager_step_count=5 base_step=98 new_step=99 base_time_ns=97000000 new_time_ns=98000000
+1: [temporal_loop_tester_node-4] [INFO] [1775676817.588087370] [temporal_loop_tester_node]: Test succeeded.
+1: ok
+1: 
+1: ----------------------------------------------------------------------
+1: Ran 1 test in 4.968s
+1: 
+1: OK
+1: [INFO] [temporal_loop_tester_node-4]: sending signal 'SIGINT' to process[temporal_loop_tester_node-4]
+1: [INFO] [provant_simulator_simulation_manager_node-3]: sending signal 'SIGINT' to process[provant_simulator_simulation_manager_node-3]
+1: [INFO] [provant_step_command_bridge-2]: sending signal 'SIGINT' to process[provant_step_command_bridge-2]
+1: [INFO] [gzserver-1]: sending signal 'SIGINT' to process[gzserver-1]
+1: [provant_simulator_simulation_manager_node-3] [INFO] [1775676817.589537915] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1: [provant_step_command_bridge-2] [INFO] [1775676817.589808466] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+1: [gzserver-1] [1;36m[Dbg] [SystemManager.cc:80] [0m[1;36mLoaded system [[0m[1;36mgz::sim::systems::UserCommands[0m[1;36m] for entity [[0m[1;36m1[0m[1;36m][0m[1;36m[0m
+1: [gzserver-1] [1;36m[Dbg] [SystemManager.cc:80] [0m[1;36mLoaded system [[0m[1;36mgz::sim::systems::SceneBroadcaster[0m[1;36m] for entity [[0m[1;36m1[0m[1;36m][0m[1;36m[0m
+1: [gzserver-1] [1;36m[Dbg] [SystemManager.cc:80] [0m[1;36mLoaded system [[0m[1;36mprovant::simulator::StepManagerSystem[0m[1;36m] for entity [[0m[1;36m1[0m[1;36m][0m[1;36m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mLoaded level [[0m[1;32mdefault[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing world controls on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/control], [[0m[1;32m/world/temporal_loop_test[0m[1;32m/control/state] and [[0m[1;32m/world/temporal_loop_test[0m[1;32m/playback/control][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing GUI information on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mgui/info[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mWorld [[0m[1;32mtemporal_loop_test[0m[1;32m] initialized with [[0m[1;32m1ms[0m[1;32m] physics profile.[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing world SDF generation service on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mgenerate_world_sdf[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing world names on [[0m[1;32m/gazebo/worlds[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mResource path add service on [[0m[1;32m/gazebo/resource_paths/add[0m[1;32m].[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mResource path get service on [[0m[1;32m/gazebo/resource_paths/get[0m[1;32m].[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mResource path resolve service on [[0m[1;32m/gazebo/resource_paths/resolve[0m[1;32m].[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mResource paths published on [[0m[1;32m/gazebo/resource_paths[0m[1;32m].[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServer control service on [[0m[1;32m/server_control[0m[1;32m].[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mFound no publishers on /stats, adding root stats topic[0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mFound no publishers on /clock, adding root clock topic[0m[1;32m[0m
+1: [gzserver-1] [1;36m[Dbg] [SimulationRunner.cc:533] [0m[1;36mCreating PostUpdate worker threads: [0m[1;36m2[0m[1;36m[0m
+1: [gzserver-1] [1;36m[Dbg] [SimulationRunner.cc:544] [0m[1;36mCreating postupdate worker thread ([0m[1;36m0[0m[1;36m)[0m[1;36m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing scene information on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mscene/info[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing graph information on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mscene/graph[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing full state on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mstate[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mServing full state (async) on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mstate_async[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPublishing scene information on [[0m[1;32m/world/temporal_loop_test/scene/info[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPublishing entity deletions on [[0m[1;32m/world/temporal_loop_test/scene/deletion[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPublishing state changes on [[0m[1;32m/world/temporal_loop_test/state[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPublishing pose messages on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mpose/info[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;32m[Msg] [0m[1;32mPublishing dynamic pose messages on [[0m[1;32m/world/temporal_loop_test[0m[1;32m/[0m[1;32mdynamic_pose/info[0m[1;32m][0m[1;32m[0m
+1: [gzserver-1] [1;36m[Dbg] [EntityComponentManager.cc:1656] [0m[1;36mUpdated state thread iterators: [0m[1;36m7[0m[1;36m threads processing around [0m[1;36m1[0m[1;36m entities each.[0m[1;36m[0m
+1: [gzserver-1] [1;36m[Dbg] [SignalHandler.cc:142] [0m[1;36mReceived signal[[0m[1;36m2[0m[1;36m].[0m
+1: [ERROR] [temporal_loop_tester_node-4]: process has died [pid 56866, exit code -2, cmd '/home/richard/ProVANT/ProVANT_Simulator_Jazzy/install/provant_temporal_loop_tests/lib/provant_temporal_loop_tests/temporal_loop_tester_node --ros-args -r __node:=temporal_loop_tester_node --params-file /tmp/launch_params_auulhklq'].
+1: [gzserver-1] [1;36m[Dbg] [ServerPrivate.cc:122] [0m[1;36mServer received signal[[0m[1;36m2[0m[1;36m][0m
+1: [gzserver-1] [1;36m[Dbg] [SimulationRunner.cc:560] [0m[1;36mExiting postupdate worker thread ([0m[1;36m0[0m[1;36m)[0m[1;36m[0m
+1: [INFO] [provant_step_command_bridge-2]: process has finished cleanly [pid 56864]
+1: [INFO] [provant_simulator_simulation_manager_node-3]: process has finished cleanly [pid 56865]
+1: [INFO] [gzserver-1]: process has finished cleanly [pid 56863]
+1: 
+1: ----------------------------------------------------------------------
+1: Ran 0 tests in 0.000s
+1: 
+1: NO TESTS RAN
+1: -- run_test.py: return code 0
+1: -- run_test.py: verify result file '/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_temporal_loop_tests/test_results/provant_temporal_loop_tests/launch_temporal_loop_test.launch.py.xunit.xml'
+1/1 Test #1: launch_temporal_loop_test.launch.py ...   Passed    5.44 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Label Time Summary:
+launch_test    =   5.44 sec*proc (1 test)
+
+Total Test time (real) =   5.44 sec
+Finished <<< provant_temporal_loop_tests [5.48s]
+
+Summary: 1 package finished [5.57s]

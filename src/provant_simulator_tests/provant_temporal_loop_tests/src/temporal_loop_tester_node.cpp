@@ -1,7 +1,7 @@
-\
 #include <chrono>
 #include <cstdint>
 #include <cstdlib>
+#include <future>
 #include <memory>
 #include <string>
 #include <thread>
@@ -15,6 +15,7 @@
 #include <std_msgs/msg/string.hpp>
 #include <std_srvs/srv/empty.hpp>
 
+#include <provant_simulator_interfaces/msg/empty.hpp>
 #include <provant_simulator_interfaces/msg/step_clock.hpp>
 #include <provant_simulator_interfaces/srv/control_group_register.hpp>
 
@@ -28,11 +29,16 @@ public:
   {
     total_cycles_ = this->declare_parameter<int>("total_cycles", 5);
     request_period_ms_ = this->declare_parameter<int>("request_period_ms", 300);
+    compute_delay_ms_ = this->declare_parameter<int>("compute_delay_ms", 20);
     startup_wait_ms_ = this->declare_parameter<int>("startup_wait_ms", 1500);
     world_name_ = this->declare_parameter<std::string>("world_name", "temporal_loop_test");
     control_timeout_ms_ = this->declare_parameter<int>("control_timeout_ms", 3000);
     stable_checks_required_ = this->declare_parameter<int>("stable_checks_required", 3);
     group_namespace_ = this->declare_parameter<std::string>("group_namespace", "/test_group");
+    expected_step_dt_ns_ =
+      this->declare_parameter<int64_t>("expected_step_dt_ns", 1000000LL);
+    time_tolerance_ns_ =
+      this->declare_parameter<int64_t>("time_tolerance_ns", 0LL);
 
     control_service_ = "/world/" + world_name_ + "/control";
 
@@ -54,7 +60,7 @@ public:
         rclcpp::QoS(10),
         std::bind(&TemporalLoopTesterNode::onSimulationState, this, std::placeholders::_1));
 
-    ready_pub_ = this->create_publisher<std_msgs::msg::Empty>(
+    ready_pub_ = this->create_publisher<provant_simulator_interfaces::msg::Empty>(
       group_namespace_ + "/ready", rclcpp::QoS(10));
 
     set_state_pub_ = this->create_publisher<std_msgs::msg::String>(
@@ -88,8 +94,15 @@ public:
 
     RCLCPP_INFO(
       this->get_logger(),
-      "Tester started. total_cycles=%d request_period_ms=%d startup_wait_ms=%d world_name='%s' group_namespace='%s'",
-      total_cycles_, request_period_ms_, startup_wait_ms_, world_name_.c_str(), group_namespace_.c_str());
+      "Tester started. total_cycles=%d request_period_ms=%d compute_delay_ms=%d startup_wait_ms=%d world_name='%s' group_namespace='%s' expected_step_dt_ns=%ld time_tolerance_ns=%ld",
+      total_cycles_,
+      request_period_ms_,
+      compute_delay_ms_,
+      startup_wait_ms_,
+      world_name_.c_str(),
+      group_namespace_.c_str(),
+      static_cast<long>(expected_step_dt_ns_),
+      static_cast<long>(time_tolerance_ns_));
   }
 
   bool done() const
@@ -103,6 +116,8 @@ public:
   }
 
 private:
+  using ReadyMsg = provant_simulator_interfaces::msg::Empty;
+
   enum class Phase
   {
     WAITING_FIRST_CLOCK,
@@ -114,9 +129,16 @@ private:
     WAITING_RUNNING_STATE,
     PUBLISHING_READY,
     WAITING_STEP_RESULT,
+    COMPUTING_FROM_CLOCK,
     SUCCESS,
     FAILURE
   };
+
+  static int64_t timeToNanoseconds(const builtin_interfaces::msg::Time& time)
+  {
+    return static_cast<int64_t>(time.sec) * 1000000000LL +
+           static_cast<int64_t>(time.nanosec);
+  }
 
   void onGroupReset(
     const std::shared_ptr<std_srvs::srv::Empty::Request> /*request*/,
@@ -137,65 +159,44 @@ private:
   void onStepClock(const provant_simulator_interfaces::msg::StepClock::SharedPtr msg)
   {
     last_step_ = msg->step;
+    last_time_ns_ = timeToNanoseconds(msg->time);
     received_first_clock_ = true;
     step_changed_since_last_check_ = true;
 
     if (!printed_first_clock_) {
       printed_first_clock_ = true;
-      RCLCPP_INFO(this->get_logger(), "Initial step_clock received: step=%u", last_step_);
+      RCLCPP_INFO(
+        this->get_logger(),
+        "Initial step_clock received: step=%u time_ns=%ld",
+        last_step_,
+        static_cast<long>(last_time_ns_));
       return;
     }
 
-    if (phase_ == Phase::WAITING_STEP_RESULT) {
-      if (last_step_ <= expected_base_step_) {
-        return;
-      }
-
-      const auto delta =
-        static_cast<int64_t>(last_step_) - static_cast<int64_t>(expected_base_step_);
-
-      if (expected_manager_step_count_ != manager_step_count_) {
-        RCLCPP_ERROR(
-          this->get_logger(),
-          "Unexpected manager step publish count. expected=%d observed=%d",
-          expected_manager_step_count_,
-          manager_step_count_);
-        fail();
-        return;
-      }
-
-      if (delta == 1) {
-        ++successful_cycles_;
-        phase_ = Phase::PUBLISHING_READY;
-        phase_start_time_ = this->now();
-
-        RCLCPP_INFO(
-          this->get_logger(),
-          "Cycle %d/%d succeeded. manager_step_count=%d base_step=%u new_step=%u",
-          successful_cycles_,
-          total_cycles_,
-          manager_step_count_,
-          expected_base_step_,
-          last_step_);
-
-        if (successful_cycles_ >= total_cycles_) {
-          phase_ = Phase::SUCCESS;
-          done_ = true;
-          exit_code_ = EXIT_SUCCESS;
-          RCLCPP_INFO(this->get_logger(), "Test succeeded.");
-          rclcpp::shutdown();
-        }
-        return;
-      }
-
-      RCLCPP_ERROR(
-        this->get_logger(),
-        "Expected exactly one world step, but observed delta=%ld (base=%u new_step=%u).",
-        static_cast<long>(delta),
-        expected_base_step_,
-        last_step_);
-      fail();
+    if (phase_ != Phase::WAITING_STEP_RESULT) {
+      return;
     }
+
+    if (last_step_ <= expected_base_step_) {
+      return;
+    }
+
+    observed_step_clock_for_cycle_ = true;
+    observed_step_delta_ =
+      static_cast<int64_t>(last_step_) - static_cast<int64_t>(expected_base_step_);
+    observed_time_delta_ns_ = last_time_ns_ - expected_base_time_ns_;
+
+    RCLCPP_INFO(
+      this->get_logger(),
+      "Observed candidate step_clock for cycle %d/%d: step=%u delta_step=%ld time_ns=%ld delta_time_ns=%ld",
+      sent_ready_messages_,
+      total_cycles_,
+      last_step_,
+      static_cast<long>(observed_step_delta_),
+      static_cast<long>(last_time_ns_),
+      static_cast<long>(observed_time_delta_ns_));
+
+    maybeCompleteCycle();
   }
 
   void onManagerStep(const std_msgs::msg::Empty::SharedPtr /*msg*/)
@@ -205,6 +206,12 @@ private:
       this->get_logger(),
       "simulation_manager published /provant_simulator/step. count=%d",
       manager_step_count_);
+
+    if (phase_ == Phase::WAITING_STEP_RESULT &&
+        manager_step_count_ >= expected_manager_step_count_) {
+      observed_manager_step_for_cycle_ = true;
+      maybeCompleteCycle();
+    }
   }
 
   void onSimulationState(const std_msgs::msg::String::SharedPtr msg)
@@ -214,6 +221,79 @@ private:
       this->get_logger(),
       "simulation_manager published state='%s'",
       last_simulation_state_.c_str());
+  }
+
+  void maybeCompleteCycle()
+  {
+    if (phase_ != Phase::WAITING_STEP_RESULT) {
+      return;
+    }
+
+    if (!observed_manager_step_for_cycle_ || !observed_step_clock_for_cycle_) {
+      return;
+    }
+
+    if (manager_step_count_ != expected_manager_step_count_) {
+      RCLCPP_ERROR(
+        this->get_logger(),
+        "Unexpected manager step publish count for cycle %d/%d. expected=%d observed=%d",
+        sent_ready_messages_,
+        total_cycles_,
+        expected_manager_step_count_,
+        manager_step_count_);
+      fail();
+      return;
+    }
+
+    if (observed_step_delta_ != 1) {
+      RCLCPP_ERROR(
+        this->get_logger(),
+        "Expected exactly one world step, but observed delta_step=%ld (base=%u new=%u).",
+        static_cast<long>(observed_step_delta_),
+        expected_base_step_,
+        last_step_);
+      fail();
+      return;
+    }
+
+    const auto time_error_ns = observed_time_delta_ns_ - expected_step_dt_ns_;
+    const auto abs_time_error_ns = time_error_ns >= 0 ? time_error_ns : -time_error_ns;
+
+    if (abs_time_error_ns > time_tolerance_ns_) {
+      RCLCPP_ERROR(
+        this->get_logger(),
+        "Unexpected simulation time increment. expected_dt_ns=%ld observed_dt_ns=%ld tolerance_ns=%ld base_time_ns=%ld new_time_ns=%ld",
+        static_cast<long>(expected_step_dt_ns_),
+        static_cast<long>(observed_time_delta_ns_),
+        static_cast<long>(time_tolerance_ns_),
+        static_cast<long>(expected_base_time_ns_),
+        static_cast<long>(last_time_ns_));
+      fail();
+      return;
+    }
+
+    ++successful_cycles_;
+    phase_ = Phase::COMPUTING_FROM_CLOCK;
+    phase_start_time_ = this->now();
+
+    RCLCPP_INFO(
+      this->get_logger(),
+      "Cycle %d/%d succeeded. manager_step_count=%d base_step=%u new_step=%u base_time_ns=%ld new_time_ns=%ld",
+      successful_cycles_,
+      total_cycles_,
+      manager_step_count_,
+      expected_base_step_,
+      last_step_,
+      static_cast<long>(expected_base_time_ns_),
+      static_cast<long>(last_time_ns_));
+
+    if (successful_cycles_ >= total_cycles_) {
+      phase_ = Phase::SUCCESS;
+      done_ = true;
+      exit_code_ = EXIT_SUCCESS;
+      RCLCPP_INFO(this->get_logger(), "Test succeeded.");
+      rclcpp::shutdown();
+    }
   }
 
   void onTimer()
@@ -257,6 +337,9 @@ private:
         return;
       case Phase::WAITING_STEP_RESULT:
         handleWaitingStepResult(now);
+        return;
+      case Phase::COMPUTING_FROM_CLOCK:
+        handleComputingFromClock(now);
         return;
       case Phase::SUCCESS:
       case Phase::FAILURE:
@@ -415,9 +498,14 @@ private:
     }
 
     expected_base_step_ = last_step_;
+    expected_base_time_ns_ = last_time_ns_;
     expected_manager_step_count_ = manager_step_count_ + 1;
+    observed_manager_step_for_cycle_ = false;
+    observed_step_clock_for_cycle_ = false;
+    observed_step_delta_ = 0;
+    observed_time_delta_ns_ = 0;
 
-    std_msgs::msg::Empty msg;
+    ReadyMsg msg;
     ready_pub_->publish(msg);
 
     phase_ = Phase::WAITING_STEP_RESULT;
@@ -426,11 +514,12 @@ private:
 
     RCLCPP_INFO(
       this->get_logger(),
-      "Published %s/ready for cycle %d/%d. expected_base_step=%u expected_manager_step_count=%d",
+      "Published %s/ready for cycle %d/%d. expected_base_step=%u expected_base_time_ns=%ld expected_manager_step_count=%d",
       group_namespace_.c_str(),
       sent_ready_messages_,
       total_cycles_,
       expected_base_step_,
+      static_cast<long>(expected_base_time_ns_),
       expected_manager_step_count_);
   }
 
@@ -443,6 +532,22 @@ private:
         sent_ready_messages_);
       fail();
     }
+  }
+
+  void handleComputingFromClock(const rclcpp::Time& now)
+  {
+    if ((now - phase_start_time_).nanoseconds() / 1000000 < compute_delay_ms_) {
+      return;
+    }
+
+    phase_ = Phase::PUBLISHING_READY;
+    phase_start_time_ = now;
+
+    RCLCPP_INFO(
+      this->get_logger(),
+      "Finished simulated control computation for cycle %d/%d. Ready for next /ready publish.",
+      successful_cycles_,
+      total_cycles_);
   }
 
   bool requestPause()
@@ -492,7 +597,7 @@ private:
   rclcpp::Subscription<provant_simulator_interfaces::msg::StepClock>::SharedPtr step_clock_sub_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr manager_step_sub_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr simulation_state_sub_;
-  rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr ready_pub_;
+  rclcpp::Publisher<ReadyMsg>::SharedPtr ready_pub_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr set_state_pub_;
   rclcpp::Client<provant_simulator_interfaces::srv::ControlGroupRegister>::SharedPtr register_client_;
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_srv_;
@@ -510,6 +615,8 @@ private:
   bool received_first_clock_{false};
   bool printed_first_clock_{false};
   bool step_changed_since_last_check_{false};
+  bool observed_manager_step_for_cycle_{false};
+  bool observed_step_clock_for_cycle_{false};
 
   int exit_code_{EXIT_FAILURE};
 
@@ -517,8 +624,16 @@ private:
   uint32_t expected_base_step_{0};
   uint32_t stable_step_reference_{0};
 
+  int64_t last_time_ns_{0};
+  int64_t expected_base_time_ns_{0};
+  int64_t expected_step_dt_ns_{1000000};
+  int64_t time_tolerance_ns_{0};
+  int64_t observed_step_delta_{0};
+  int64_t observed_time_delta_ns_{0};
+
   int total_cycles_{5};
   int request_period_ms_{300};
+  int compute_delay_ms_{20};
   int startup_wait_ms_{1500};
   int control_timeout_ms_{3000};
   int stable_checks_required_{3};

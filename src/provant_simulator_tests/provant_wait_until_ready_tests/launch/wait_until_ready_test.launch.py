@@ -18,14 +18,14 @@ def _prepend_env_path(env_name: str, new_path: str) -> str:
 
 
 def generate_test_description():
-    test_pkg_share = get_package_share_directory("provant_temporal_loop_tests")
+    test_pkg_share = get_package_share_directory("provant_wait_until_ready_tests")
     ros_gz_sim_share = get_package_share_directory("ros_gz_sim")
     gz_plugins_prefix = get_package_prefix("provant_simulator_gz_plugins")
 
     world_path = os.path.join(
         test_pkg_share,
         "worlds",
-        "temporal_loop_minimal.sdf",
+        "wait_until_ready_minimal.sdf",
     )
 
     plugin_lib_path = os.path.join(gz_plugins_prefix, "lib")
@@ -40,40 +40,16 @@ def generate_test_description():
         }.items(),
     )
 
-    bridge = Node(
-        package="provant_simulator_step_command_bridge",
-        executable="provant_step_command_bridge",
-        name="provant_step_command_bridge",
-        output="screen",
-        parameters=[
-            {
-                "world_name": "temporal_loop_test",
-                "timeout_ms": 3000,
-            }
-        ],
-    )
-
-    simulation_manager = Node(
-        package="provant_simulator_simulation_manager",
-        executable="provant_simulator_simulation_manager_node",
-        name="simulation_manager",
-        output="screen",
-    )
-
     tester = Node(
-        package="provant_temporal_loop_tests",
-        executable="temporal_loop_tester_node",
-        name="temporal_loop_tester_node",
+        package="provant_wait_until_ready_tests",
+        executable="wait_until_ready_tester_node",
+        name="wait_until_ready_tester_node",
         output="screen",
         parameters=[
             {
-                "total_cycles": 5,
-                "request_period_ms": 300,
-                "startup_wait_ms": 1500,
-                "world_name": "temporal_loop_test",
-                "control_timeout_ms": 3000,
-                "stable_checks_required": 3,
-                "group_namespace": "/test_group",
+                "startup_wait_ms": 300,
+                "verification_window_ms": 500,
+                "step_timeout_ms": 2000,
             }
         ],
     )
@@ -86,8 +62,6 @@ def generate_test_description():
                     _prepend_env_path("GZ_SIM_PLUGIN_PATH", plugin_lib_path),
                 ),
                 gazebo,
-                bridge,
-                simulation_manager,
                 tester,
                 launch_testing.actions.ReadyToTest(),
             ]
@@ -98,11 +72,11 @@ def generate_test_description():
     )
 
 
-class TestTemporalLoopActive(unittest.TestCase):
+class TestWaitUntilReadyActive(unittest.TestCase):
 
-    def test_temporal_loop_reports_success(self, proc_output, tester):
+    def test_wait_until_ready_reports_success(self, proc_output, tester):
         proc_output.assertWaitFor(
             "Test succeeded.",
             process=tester,
-            timeout=40.0,
+            timeout=30.0,
         )
