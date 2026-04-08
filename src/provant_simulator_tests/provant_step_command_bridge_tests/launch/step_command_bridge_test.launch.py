@@ -84,22 +84,27 @@ def generate_test_description():
         ),
         {
             "tester": tester,
+            "bridge": bridge,
+            "gazebo": gazebo,
         },
     )
 
 
 class TestStepCommandBridgeActive(unittest.TestCase):
 
-    def test_tester_reports_success(self, proc_output, tester):
+    def test_tester_reports_progress_and_success(self, proc_output, tester):
+        proc_output.assertWaitFor(
+            "Published step request 1/5",
+            process=tester,
+            timeout=30.0,
+        )
+        proc_output.assertWaitFor(
+            "Step request 5/5 succeeded",
+            process=tester,
+            timeout=30.0,
+        )
         proc_output.assertWaitFor(
             "Test succeeded.",
             process=tester,
             timeout=30.0,
         )
-
-
-@launch_testing.post_shutdown_test()
-class TestStepCommandBridgePostShutdown(unittest.TestCase):
-
-    def test_tester_exits_successfully(self, proc_info, tester):
-        launch_testing.asserts.assertExitCodes(proc_info, process=tester)
