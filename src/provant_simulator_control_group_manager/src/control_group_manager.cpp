@@ -69,6 +69,14 @@ void ControlGroupManager::readParameters()
 /// latest readings and notify the simulation manager that this control group is ready.
 void provant::ControlGroupManager::onStepClockMsg(StepClockMsg::UniquePtr msg)
 {
+  RCLCPP_INFO(
+    this->get_logger(),
+    "[CGM] Global step_clock received: step=%u time_ns=%ld has_last=%s",
+    msg->step,
+    static_cast<long>(rclcpp::Time(msg->time).nanoseconds()),
+    _lastExecutedOn.has_value() ? "true" : "false"
+  );
+
   using clock = std::chrono::high_resolution_clock;
   auto const start = clock::now();
 
@@ -77,14 +85,44 @@ void provant::ControlGroupManager::onStepClockMsg(StepClockMsg::UniquePtr msg)
     const rclcpp::Time now{msg->time, RCL_ROS_TIME};
 
     if (!this->_lastExecutedOn.has_value()) {
+      RCLCPP_INFO(
+        this->get_logger(),
+        "[CGM] First execution branch. Publishing LOCAL step_clock: step=%u time_ns=%ld",
+        msg->step,
+        static_cast<long>(rclcpp::Time(msg->time).nanoseconds())
+      );
+
       this->_stepClockPublisher->publish(std::move(msg));
       this->_lastExecutedOn = now;
     } else {
       auto const diff = now - this->_lastExecutedOn.value();
+      
+      RCLCPP_INFO(
+        this->get_logger(),
+        "[CGM] Period check: step=%u diff_ns=%ld control_step_ns=%ld",
+        msg->step,
+        static_cast<long>(diff.nanoseconds()),
+        static_cast<long>(_controlStep.nanoseconds())
+      );
+      
       if (diff >= _controlStep) {
+        RCLCPP_INFO(
+          this->get_logger(),
+          "[CGM] CONTROL branch. Publishing LOCAL step_clock: step=%u time_ns=%ld",
+          msg->step,
+          static_cast<long>(rclcpp::Time(msg->time).nanoseconds())
+        );
+
         this->_stepClockPublisher->publish(std::move(msg));
         this->_lastExecutedOn = now;
       } else {
+        RCLCPP_INFO(
+          this->get_logger(),
+          "[CGM] ZOH branch. Publishing zoh_trigger: step=%u time_ns=%ld",
+          msg->step,
+          static_cast<long>(rclcpp::Time(msg->time).nanoseconds())
+        );
+
         EmptyMsg triggerMsg{};
 
         triggerMsg.pheader.step = msg->step;
@@ -94,6 +132,13 @@ void provant::ControlGroupManager::onStepClockMsg(StepClockMsg::UniquePtr msg)
         this->_zohTriggerPublisher->publish(triggerMsg);
 
         publishReadyMessage(start, msg->step, msg->time);
+        
+        RCLCPP_INFO(
+          this->get_logger(),
+          "[CGM] ZOH branch. Publishing READY: step=%u time_ns=%ld",
+          msg->step,
+          static_cast<long>(rclcpp::Time(msg->time).nanoseconds())
+        );
       }
     }
   } catch (const std::overflow_error & e) {
@@ -124,6 +169,16 @@ void provant::ControlGroupManager::onStepClockMsg(StepClockMsg::UniquePtr msg)
 /// on a given control step.
 void ControlGroupManager::onControlInputsMsg(ControlGroupManager::FloatArrayMsg::UniquePtr msg)
 {
+  RCLCPP_INFO(
+    this->get_logger(),
+    "[CGM] CONTROL_INPUTS received: step=%u time_ns=%ld has_disturbances=%s controlReady=%s disturbancesReady=%s",
+    msg->pheader.step,
+    static_cast<long>(rclcpp::Time(msg->pheader.timestamp).nanoseconds()),
+    _hasDisturbances ? "true" : "false",
+    _controlReady ? "true" : "false",
+    _disturbancesReady ? "true" : "false"
+  );
+  
   auto const start = Clock::now();
   if (_hasDisturbances) {
     std::lock_guard lk{_updateMutex};
@@ -132,6 +187,13 @@ void ControlGroupManager::onControlInputsMsg(ControlGroupManager::FloatArrayMsg:
       // If the disturbances have already been published, when the control inputs are received,
       // the control group is ready.
       publishReadyMessage(start, msg->pheader.step, msg->pheader.timestamp);
+      
+      RCLCPP_INFO(
+        this->get_logger(),
+        "[CGM] Publishing READY from onControlMsg: step=%u time_ns=%ld",
+        msg->pheader.step,
+        static_cast<long>(rclcpp::Time(msg->pheader.timestamp).nanoseconds())
+      );
     } else {
       // If the control group has a disturbance generator, and the disturbances are not ready, the
       // control ready state should be updated.
@@ -141,6 +203,13 @@ void ControlGroupManager::onControlInputsMsg(ControlGroupManager::FloatArrayMsg:
     // If the control group has no disturbance generator, when the controller publishes the control
     // inputs, the control group is ready.
     publishReadyMessage(start, msg->pheader.step, msg->pheader.timestamp);
+    
+    RCLCPP_INFO(
+      this->get_logger(),
+      "[CGM] Publishing READY from onControlMsg: step=%u time_ns=%ld",
+      msg->pheader.step,
+      static_cast<long>(rclcpp::Time(msg->pheader.timestamp).nanoseconds())
+    );
   }
 }
 
@@ -154,6 +223,15 @@ void ControlGroupManager::onControlInputsMsg(ControlGroupManager::FloatArrayMsg:
 /// complete.
 void ControlGroupManager::onDisturbancesMsg(ControlGroupManager::FloatArrayMsg::UniquePtr msg)
 {
+  RCLCPP_INFO(
+    this->get_logger(),
+    "[CGM] DISTURBANCES received: step=%u time_ns=%ld controlReady=%s disturbancesReady=%s",
+    msg->pheader.step,
+    static_cast<long>(rclcpp::Time(msg->pheader.timestamp).nanoseconds()),
+    _controlReady ? "true" : "false",
+    _disturbancesReady ? "true" : "false"
+  );
+
   auto const start = Clock::now();
   std::lock_guard lk{_updateMutex};
 
@@ -161,6 +239,14 @@ void ControlGroupManager::onDisturbancesMsg(ControlGroupManager::FloatArrayMsg::
     // If the control inputs are ready, when the disturbances are published, the control group
     // is ready.
     publishReadyMessage(start, msg->pheader.step, msg->pheader.timestamp);
+    
+    RCLCPP_INFO(
+      this->get_logger(),
+      "[CGM] Publishing READY from onDisturbanceMsg: step=%u time_ns=%ld",
+      msg->pheader.step,
+      static_cast<long>(rclcpp::Time(msg->pheader.timestamp).nanoseconds())
+    );
+    
   } else {
     // If the control inputs are not ready, indicate that the disturbances are ready, and wait
     // for the control inputs.
