@@ -1,0 +1,359 @@
+build/provant_controlloop_test/Testing/20260410-1928/Test.xml: 1 test, 0 errors, 1 failure, 0 skipped
+- launch_controlloop_test.launch.py
+  <<< failure message
+    -- run_test.py: invoking following command in '/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_controlloop_test':
+     - /usr/bin/python3 -m launch_testing.launch_test /home/richard/ProVANT/ProVANT_Simulator_Jazzy/src/provant_simulator_tests/provant_controlloop_test/launch/controlloop_test.launch.py --junit-xml=/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_controlloop_test/test_results/provant_controlloop_test/launch_controlloop_test.launch.py.xunit.xml --package-name=provant_controlloop_test
+    [INFO] [launch]: All log files can be found below /home/richard/.ros/log/2026-04-10-16-28-52-876033-richard-XPS-8960-44356
+    [INFO] [launch]: Default logging verbosity is set to INFO
+    test_controlloop_reports_success (provant_controlloop_test.TestControlLoopActive.test_controlloop_reports_success) ... [INFO] [gzserver-1]: process started with pid [44370]
+    [INFO] [provant_step_command_bridge-2]: process started with pid [44371]
+    [INFO] [provant_simulator_simulation_manager_node-3]: process started with pid [44372]
+    [INFO] [provant_simulator_control_group_manager-4]: process started with pid [44373]
+    [INFO] [fake_controller_node-5]: process started with pid [44374]
+    [INFO] [fake_disturbance_node-6]: process started with pid [44434]
+    [INFO] [controlloop_tester_node-7]: process started with pid [44436]
+    [provant_simulator_simulation_manager_node-3] [INFO] [1775849333.087609563] [simulation_manager]: Initializing node.
+    [provant_simulator_simulation_manager_node-3] [INFO] [1775849333.088821776] [simulation_manager]: Node initialized successfully.
+    [provant_simulator_control_group_manager-4] [INFO] [1775849333.090642352] [test_group.control_group_manager]: The control group was successfully registered.
+    [provant_step_command_bridge-2] [INFO] [1775849333.108383467] [provant_step_command_bridge]: StepCommandBridge started. step_topic='/provant_simulator/step', world_name='temporal_loop_test', control_service='/world/temporal_loop_test/control', timeout_ms=3000
+    [controlloop_tester_node-7] [INFO] [1775849333.113031540] [controlloop_tester_node]: Control loop tester started.
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mLoading SDF world file[[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/home/richard/ProVANT/ProVANT_Simulator_Jazzy/install/provant_controlloop_test/share/provant_controlloop_test/worlds/controlloop_minimal.sdf[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m].[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing entity system service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mentity/system/add[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [Physics.cc:899] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mLoaded [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mgz::physics::dartsim::Plugin[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m] from library [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m/opt/ros/jazzy/opt/gz_physics_vendor/lib/gz-physics-7/engine-plugins/libgz-physics-dartsim-plugin.so[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SystemManager.cc:80] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mLoaded system [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mgz::sim::systems::Physics[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m] for entity [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m1[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mCreate[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/create_multiple[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mCreate[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/create_multiple/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mRemove[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/remove[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mRemove[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/remove/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPose[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_pose[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPose[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_pose/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPose[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_pose_vector[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPose[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_pose_vector/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mLight configuration[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/light_config[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mLight configuration[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/light_config/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPhysics[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_physics[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPhysics[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_physics/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mSphericalCoordinates[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_spherical_coordinates[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mSphericalCoordinates[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/set_spherical_coordinates/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mEnable collision[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/enable_collision[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mEnable collision[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/enable_collision/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mDisable collision[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/disable_collision[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mDisable collision[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/disable_collision/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mMaterial[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/visual_config[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mMaterial[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/visual_config/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mMaterial[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/wheel_slip[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (async)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mMaterial[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/wheel_slip/blocking[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] (blocking)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [INFO] [1775849333.286757828] [provant_step_manager_system]: StepManagerSystem configured. step_clock_topic='/provant_simulator/step_clock', reset_service='/provant_simulator/reset'
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.132907457] [test_group.control_group_manager]: [CGM] Global step_clock received: step=2 time_ns=1000000 has_last=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.132932009] [test_group.control_group_manager]: [CGM] First execution branch. Publishing LOCAL step_clock: step=2 time_ns=1000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.133189756] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=2 time_ns=1000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.133211194] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=2 time_ns=1000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.133231037] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=2 time_ns=1000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.133852467] [test_group.control_group_manager]: [CGM] Global step_clock received: step=3 time_ns=2000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.133858441] [test_group.control_group_manager]: [CGM] Period check: step=3 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.133860645] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=3 time_ns=2000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.133871569] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=3 time_ns=2000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.134902446] [test_group.control_group_manager]: [CGM] Global step_clock received: step=4 time_ns=3000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.134905164] [test_group.control_group_manager]: [CGM] Period check: step=4 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.134910053] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=4 time_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.134916107] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=4 time_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136003391] [test_group.control_group_manager]: [CGM] Global step_clock received: step=5 time_ns=4000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136005985] [test_group.control_group_manager]: [CGM] Period check: step=5 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136007792] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=5 time_ns=4000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136092754] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=5 time_ns=4000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136174889] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=5 time_ns=4000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136181887] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=5 time_ns=4000000
+    [controlloop_tester_node-7] [INFO] [1775849335.136690143] [controlloop_tester_node]: Initial step_clock received: step=2 time_ns=1000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136995538] [test_group.control_group_manager]: [CGM] Global step_clock received: step=6 time_ns=5000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136998027] [test_group.control_group_manager]: [CGM] Period check: step=6 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.136999790] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=6 time_ns=5000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.137004626] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=6 time_ns=5000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.138044765] [test_group.control_group_manager]: [CGM] Global step_clock received: step=7 time_ns=6000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.138048420] [test_group.control_group_manager]: [CGM] Period check: step=7 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.138050295] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=7 time_ns=6000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.138055062] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=7 time_ns=6000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.139166943] [test_group.control_group_manager]: [CGM] Global step_clock received: step=8 time_ns=7000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.139180994] [test_group.control_group_manager]: [CGM] Period check: step=8 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.139197708] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=8 time_ns=7000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.139244528] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=8 time_ns=7000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.139336432] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=8 time_ns=7000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.139341460] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=8 time_ns=7000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.140183884] [test_group.control_group_manager]: [CGM] Global step_clock received: step=9 time_ns=8000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.140186397] [test_group.control_group_manager]: [CGM] Period check: step=9 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.140188300] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=9 time_ns=8000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.140195187] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=9 time_ns=8000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.141243816] [test_group.control_group_manager]: [CGM] Global step_clock received: step=10 time_ns=9000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.141248015] [test_group.control_group_manager]: [CGM] Period check: step=10 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.141249791] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=10 time_ns=9000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.141254930] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=10 time_ns=9000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.142355956] [test_group.control_group_manager]: [CGM] Global step_clock received: step=11 time_ns=10000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.142370614] [test_group.control_group_manager]: [CGM] Period check: step=11 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.142378063] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=11 time_ns=10000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.142421030] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=11 time_ns=10000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.142482151] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=11 time_ns=10000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.142488252] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=11 time_ns=10000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.143373516] [test_group.control_group_manager]: [CGM] Global step_clock received: step=12 time_ns=11000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.143376114] [test_group.control_group_manager]: [CGM] Period check: step=12 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.143377901] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=12 time_ns=11000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.143385815] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=12 time_ns=11000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.144451730] [test_group.control_group_manager]: [CGM] Global step_clock received: step=13 time_ns=12000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.144466023] [test_group.control_group_manager]: [CGM] Period check: step=13 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.144477489] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=13 time_ns=12000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.144485531] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=13 time_ns=12000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.145490223] [test_group.control_group_manager]: [CGM] Global step_clock received: step=14 time_ns=13000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.145504270] [test_group.control_group_manager]: [CGM] Period check: step=14 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.145515306] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=14 time_ns=13000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.145557484] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=14 time_ns=13000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.145654047] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=14 time_ns=13000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.145659343] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=14 time_ns=13000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.146490311] [test_group.control_group_manager]: [CGM] Global step_clock received: step=15 time_ns=14000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.146492761] [test_group.control_group_manager]: [CGM] Period check: step=15 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.146494808] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=15 time_ns=14000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.146500617] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=15 time_ns=14000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.147550507] [test_group.control_group_manager]: [CGM] Global step_clock received: step=16 time_ns=15000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.147556006] [test_group.control_group_manager]: [CGM] Period check: step=16 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.147558747] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=16 time_ns=15000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.147569717] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=16 time_ns=15000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.148646978] [test_group.control_group_manager]: [CGM] Global step_clock received: step=17 time_ns=16000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.148660649] [test_group.control_group_manager]: [CGM] Period check: step=17 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.148673816] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=17 time_ns=16000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.148726347] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=17 time_ns=16000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.148807648] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=17 time_ns=16000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.148812757] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=17 time_ns=16000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.149625672] [test_group.control_group_manager]: [CGM] Global step_clock received: step=18 time_ns=17000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.149627944] [test_group.control_group_manager]: [CGM] Period check: step=18 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.149631808] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=18 time_ns=17000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.149636465] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=18 time_ns=17000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.150716757] [test_group.control_group_manager]: [CGM] Global step_clock received: step=19 time_ns=18000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.150730178] [test_group.control_group_manager]: [CGM] Period check: step=19 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.150742222] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=19 time_ns=18000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.150770716] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=19 time_ns=18000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.151681299] [test_group.control_group_manager]: [CGM] Global step_clock received: step=20 time_ns=19000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.151683451] [test_group.control_group_manager]: [CGM] Period check: step=20 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.151685522] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=20 time_ns=19000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.151727303] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=20 time_ns=19000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.151790223] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=20 time_ns=19000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.151800225] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=20 time_ns=19000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.152720304] [test_group.control_group_manager]: [CGM] Global step_clock received: step=21 time_ns=20000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.152734417] [test_group.control_group_manager]: [CGM] Period check: step=21 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.152751473] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=21 time_ns=20000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.152774291] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=21 time_ns=20000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.153696723] [test_group.control_group_manager]: [CGM] Global step_clock received: step=22 time_ns=21000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.153698962] [test_group.control_group_manager]: [CGM] Period check: step=22 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.153700787] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=22 time_ns=21000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.153706397] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=22 time_ns=21000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.154720795] [test_group.control_group_manager]: [CGM] Global step_clock received: step=23 time_ns=22000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.154734290] [test_group.control_group_manager]: [CGM] Period check: step=23 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.154745625] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=23 time_ns=22000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.154828817] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=23 time_ns=22000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.154917334] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=23 time_ns=22000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.154922213] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=23 time_ns=22000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.155680717] [test_group.control_group_manager]: [CGM] Global step_clock received: step=24 time_ns=23000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.155683768] [test_group.control_group_manager]: [CGM] Period check: step=24 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.155685507] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=24 time_ns=23000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.155690066] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=24 time_ns=23000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.156722177] [test_group.control_group_manager]: [CGM] Global step_clock received: step=25 time_ns=24000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.156736089] [test_group.control_group_manager]: [CGM] Period check: step=25 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.156748140] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=25 time_ns=24000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.156776742] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=25 time_ns=24000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.157721912] [test_group.control_group_manager]: [CGM] Global step_clock received: step=26 time_ns=25000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.157735369] [test_group.control_group_manager]: [CGM] Period check: step=26 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.157746968] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=26 time_ns=25000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.157808732] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=26 time_ns=25000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.157812425] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=26 time_ns=25000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.157819288] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=26 time_ns=25000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.158724914] [test_group.control_group_manager]: [CGM] Global step_clock received: step=27 time_ns=26000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.158738701] [test_group.control_group_manager]: [CGM] Period check: step=27 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.158750146] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=27 time_ns=26000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.158763237] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=27 time_ns=26000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.159711860] [test_group.control_group_manager]: [CGM] Global step_clock received: step=28 time_ns=27000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.159733090] [test_group.control_group_manager]: [CGM] Period check: step=28 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.159734976] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=28 time_ns=27000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.159740117] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=28 time_ns=27000000
+    [gzserver-1] [INFO] [1775849335.159896939] [gzserver]: InitializeCanonicalLinks
+    [gzserver-1] [INFO] [1775849335.159933912] [gzserver]: Creating services on gzserver
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.160745840] [test_group.control_group_manager]: [CGM] Global step_clock received: step=29 time_ns=28000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.160759807] [test_group.control_group_manager]: [CGM] Period check: step=29 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.160771335] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=29 time_ns=28000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.160836377] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=29 time_ns=28000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.160926999] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=29 time_ns=28000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.160933021] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=29 time_ns=28000000
+    [gzserver-1] [INFO] [1775849335.161425685] [gzserver]: Created service /gzserver/delete_entity
+    [gzserver-1] [INFO] [1775849335.161674749] [gzserver]: Created service /gzserver/get_entities
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.161777569] [test_group.control_group_manager]: [CGM] Global step_clock received: step=30 time_ns=29000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.161785702] [test_group.control_group_manager]: [CGM] Period check: step=30 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.161789377] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=30 time_ns=29000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.161803130] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=30 time_ns=29000000
+    [gzserver-1] [INFO] [1775849335.161877532] [gzserver]: Created service /gzserver/get_entity_info
+    [gzserver-1] [INFO] [1775849335.162092010] [gzserver]: Created service /gzserver/get_entity_state
+    [gzserver-1] [INFO] [1775849335.162471000] [gzserver]: Created service /gzserver/get_entities_states
+    [gzserver-1] [INFO] [1775849335.162794496] [gzserver]: Created service /gzserver/get_simulation_state
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.162819549] [test_group.control_group_manager]: [CGM] Global step_clock received: step=31 time_ns=30000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.162828102] [test_group.control_group_manager]: [CGM] Period check: step=31 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.162830318] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=31 time_ns=30000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.162842455] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=31 time_ns=30000000
+    [gzserver-1] [INFO] [1775849335.163102319] [gzserver]: Created service /gzserver/get_simulator_features
+    [gzserver-1] [INFO] [1775849335.163405809] [gzserver]: Created service /gzserver/reset_simulation
+    [gzserver-1] [INFO] [1775849335.163722525] [gzserver]: Created service /gzserver/set_entity_state
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.163855933] [test_group.control_group_manager]: [CGM] Global step_clock received: step=32 time_ns=31000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.163862158] [test_group.control_group_manager]: [CGM] Period check: step=32 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.163866234] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=32 time_ns=31000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.163935798] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=32 time_ns=31000000 has_disturbances=true controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.163944032] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=32 time_ns=31000000 controlReady=true disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.163950309] [test_group.control_group_manager]: [CGM] Publishing READY from onDisturbanceMsg: step=32 time_ns=31000000
+    [gzserver-1] [INFO] [1775849335.164074928] [gzserver]: Created service /gzserver/set_simulation_state
+    [gzserver-1] [INFO] [1775849335.164417482] [gzserver]: Created service /gzserver/spawn_entity
+    [gzserver-1] [INFO] [1775849335.164727249] [gzserver]: Created service /gzserver/step_simulation
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.164895813] [test_group.control_group_manager]: [CGM] Global step_clock received: step=33 time_ns=32000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.164907659] [test_group.control_group_manager]: [CGM] Period check: step=33 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.164910025] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=33 time_ns=32000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.164919203] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=33 time_ns=32000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.165950218] [test_group.control_group_manager]: [CGM] Global step_clock received: step=34 time_ns=33000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.165954437] [test_group.control_group_manager]: [CGM] Period check: step=34 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.165956599] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=34 time_ns=33000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.165963974] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=34 time_ns=33000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.167026441] [test_group.control_group_manager]: [CGM] Global step_clock received: step=35 time_ns=34000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.167039071] [test_group.control_group_manager]: [CGM] Period check: step=35 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.167042747] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=35 time_ns=34000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.167142162] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=35 time_ns=34000000 controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.167156834] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=35 time_ns=34000000 has_disturbances=true controlReady=false disturbancesReady=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.167168349] [test_group.control_group_manager]: [CGM] Publishing READY from onControlMsg: step=35 time_ns=34000000
+    [gzserver-1] [INFO] [1775849335.167450068] [gzserver]: Created action /gzserver/simulate_steps
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.168059717] [test_group.control_group_manager]: [CGM] Global step_clock received: step=36 time_ns=35000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.168068324] [test_group.control_group_manager]: [CGM] Period check: step=36 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.168070735] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=36 time_ns=35000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.168083954] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=36 time_ns=35000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.169118292] [test_group.control_group_manager]: [CGM] Global step_clock received: step=37 time_ns=36000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.169133526] [test_group.control_group_manager]: [CGM] Period check: step=37 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.169145180] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=37 time_ns=36000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.169162687] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=37 time_ns=36000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.170120961] [test_group.control_group_manager]: [CGM] Global step_clock received: step=38 time_ns=37000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.170123233] [test_group.control_group_manager]: [CGM] Period check: step=38 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.170125188] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=38 time_ns=37000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.170168872] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=38 time_ns=37000000 has_disturbances=true controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.170176397] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=38 time_ns=37000000 controlReady=true disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.170182200] [test_group.control_group_manager]: [CGM] Publishing READY from onDisturbanceMsg: step=38 time_ns=37000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.171162162] [test_group.control_group_manager]: [CGM] Global step_clock received: step=39 time_ns=38000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.171165386] [test_group.control_group_manager]: [CGM] Period check: step=39 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.171173329] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=39 time_ns=38000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.171178460] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=39 time_ns=38000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.172201255] [test_group.control_group_manager]: [CGM] Global step_clock received: step=40 time_ns=39000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.172203497] [test_group.control_group_manager]: [CGM] Period check: step=40 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.172205487] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=40 time_ns=39000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.172210437] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=40 time_ns=39000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.173300750] [test_group.control_group_manager]: [CGM] Global step_clock received: step=41 time_ns=40000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.173314245] [test_group.control_group_manager]: [CGM] Period check: step=41 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.173325829] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=41 time_ns=40000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.173377322] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=41 time_ns=40000000 has_disturbances=true controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.173386818] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=41 time_ns=40000000 controlReady=true disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.173391348] [test_group.control_group_manager]: [CGM] Publishing READY from onDisturbanceMsg: step=41 time_ns=40000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.174353976] [test_group.control_group_manager]: [CGM] Global step_clock received: step=42 time_ns=41000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.174367618] [test_group.control_group_manager]: [CGM] Period check: step=42 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.174379853] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=42 time_ns=41000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.174392886] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=42 time_ns=41000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.175350746] [test_group.control_group_manager]: [CGM] Global step_clock received: step=43 time_ns=42000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.175353024] [test_group.control_group_manager]: [CGM] Period check: step=43 diff_ns=2000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.175354841] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=43 time_ns=42000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.175359415] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=43 time_ns=42000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.176388187] [test_group.control_group_manager]: [CGM] Global step_clock received: step=44 time_ns=43000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.176390527] [test_group.control_group_manager]: [CGM] Period check: step=44 diff_ns=3000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.176395816] [test_group.control_group_manager]: [CGM] CONTROL branch. Publishing LOCAL step_clock: step=44 time_ns=43000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.176428552] [test_group.control_group_manager]: [CGM] CONTROL_INPUTS received: step=44 time_ns=43000000 has_disturbances=true controlReady=false disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.176443495] [test_group.control_group_manager]: [CGM] DISTURBANCES received: step=44 time_ns=43000000 controlReady=true disturbancesReady=false
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.176450014] [test_group.control_group_manager]: [CGM] Publishing READY from onDisturbanceMsg: step=44 time_ns=43000000
+    [controlloop_tester_node-7] [INFO] [1775849335.277800952] [controlloop_tester_node]: Pause requested. Waiting for global step_clock stabilization. current_step=5 current_time_ns=4000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.277835583] [test_group.control_group_manager]: [CGM] Global step_clock received: step=45 time_ns=44000000 has_last=true
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.277851036] [test_group.control_group_manager]: [CGM] Period check: step=45 diff_ns=1000000 control_step_ns=3000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.277853691] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing zoh_trigger: step=45 time_ns=44000000
+    [provant_simulator_control_group_manager-4] [INFO] [1775849335.277889204] [test_group.control_group_manager]: [CGM] ZOH branch. Publishing READY: step=45 time_ns=44000000
+    [controlloop_tester_node-7] [INFO] [1775849335.742068572] [controlloop_tester_node]: World appears paused. Starting simulation_manager without bootstrap. stable_step=45 stable_time_ns=44000000
+    [controlloop_tester_node-7] [INFO] [1775849335.762410824] [controlloop_tester_node]: Start command sent to simulation_manager. Waiting for running state.
+    [controlloop_tester_node-7] [INFO] [1775849335.782671289] [controlloop_tester_node]: simulation_manager is running. Bootstrap disabled. Verifying that no new global step_clock arrives. reference_step=45 reference_time_ns=44000000
+    [controlloop_tester_node-7] [INFO] [1775849337.797651676] [controlloop_tester_node]: No new global step_clock observed after pause confirmation and without bootstrap. World remained paused. reference_step=45 reference_time_ns=44000000
+    [INFO] [controlloop_tester_node-7]: process has finished cleanly [pid 44436]
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SystemManager.cc:80] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mLoaded system [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mgz::sim::systems::UserCommands[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m] for entity [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m1[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SystemManager.cc:80] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mLoaded system [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mgz::sim::systems::SceneBroadcaster[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m] for entity [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m1[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SystemManager.cc:80] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mLoaded system [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mprovant::simulator::StepManagerSystem[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m] for entity [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m1[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mLoaded level [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mdefault[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing world controls on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/control], [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/control/state] and [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/playback/control][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing GUI information on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mgui/info[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mWorld [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mtemporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] initialized with [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m1ms[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m] physics profile.[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing world SDF generation service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mgenerate_world_sdf[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing world names on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/gazebo/worlds[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mResource path add service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/gazebo/resource_paths/add[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m].[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mResource path get service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/gazebo/resource_paths/get[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m].[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mResource path resolve service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/gazebo/resource_paths/resolve[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m].[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mResource paths published on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/gazebo/resource_paths[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m].[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServer control service on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/server_control[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m].[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mFound no publishers on /stats, adding root stats topic[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mFound no publishers on /clock, adding root clock topic[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SimulationRunner.cc:533] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mCreating PostUpdate worker threads: [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m2[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SimulationRunner.cc:544] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mCreating postupdate worker thread ([NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m0[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing scene information on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mscene/info[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing graph information on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mscene/graph[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing full state on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mstate[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mServing full state (async) on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mstate_async[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPublishing scene information on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/scene/info[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPublishing entity deletions on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/scene/deletion[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPublishing state changes on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test/state[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPublishing pose messages on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mpose/info[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;32m[Msg] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mPublishing dynamic pose messages on [[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/world/temporal_loop_test[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m/[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32mdynamic_pose/info[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m][NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;32m[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [EntityComponentManager.cc:1656] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mUpdated state thread iterators: [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m7[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m threads processing around [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m1[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m entities each.[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    FAIL
+    
+    ======================================================================
+    FAIL: test_controlloop_reports_success (provant_controlloop_test.TestControlLoopActive.test_controlloop_reports_success)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "/home/richard/ProVANT/ProVANT_Simulator_Jazzy/src/provant_simulator_tests/provant_controlloop_test/launch/controlloop_test.launch.py", line 126, in test_controlloop_reports_success
+        proc_output.assertWaitFor(
+      File "/opt/ros/jazzy/lib/python3.12/site-packages/launch_testing/io_handler.py", line 146, in assertWaitFor
+        assert success, 'Waiting for output timed out'
+               ^^^^^^^
+    AssertionError: Waiting for output timed out
+    
+    ----------------------------------------------------------------------
+    Ran 1 test in 50.001s
+    
+    FAILED (failures=1)
+    [INFO] [fake_disturbance_node-6]: sending signal 'SIGINT' to process[fake_disturbance_node-6]
+    [INFO] [fake_controller_node-5]: sending signal 'SIGINT' to process[fake_controller_node-5]
+    [INFO] [provant_simulator_control_group_manager-4]: sending signal 'SIGINT' to process[provant_simulator_control_group_manager-4]
+    [INFO] [provant_simulator_simulation_manager_node-3]: sending signal 'SIGINT' to process[provant_simulator_simulation_manager_node-3]
+    [INFO] [provant_step_command_bridge-2]: sending signal 'SIGINT' to process[provant_step_command_bridge-2]
+    [INFO] [gzserver-1]: sending signal 'SIGINT' to process[gzserver-1]
+    [fake_disturbance_node-6] [INFO] [1775849383.061965607] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+    [fake_controller_node-5] [INFO] [1775849383.062018945] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+    [provant_simulator_control_group_manager-4] [INFO] [1775849383.062222804] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+    [provant_simulator_simulation_manager_node-3] [INFO] [1775849383.062431821] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+    [provant_step_command_bridge-2] [INFO] [1775849383.062644715] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SignalHandler.cc:142] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mReceived signal[[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m2[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m].[NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [ServerPrivate.cc:122] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mServer received signal[[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m2[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m][NON-XML-CHAR-0x1B][0m
+    [gzserver-1] [NON-XML-CHAR-0x1B][1;36m[Dbg] [SimulationRunner.cc:560] [NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36mExiting postupdate worker thread ([NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m0[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m)[NON-XML-CHAR-0x1B][0m[NON-XML-CHAR-0x1B][1;36m[NON-XML-CHAR-0x1B][0m
+    [INFO] [fake_controller_node-5]: process has finished cleanly [pid 44374]
+    [INFO] [fake_disturbance_node-6]: process has finished cleanly [pid 44434]
+    [INFO] [provant_simulator_simulation_manager_node-3]: process has finished cleanly [pid 44372]
+    [INFO] [provant_step_command_bridge-2]: process has finished cleanly [pid 44371]
+    [INFO] [provant_simulator_control_group_manager-4]: process has finished cleanly [pid 44373]
+    [INFO] [gzserver-1]: process has finished cleanly [pid 44370]
+    
+    ----------------------------------------------------------------------
+    Ran 0 tests in 0.000s
+    
+    NO TESTS RAN
+    -- run_test.py: return code 1
+    -- run_test.py: verify result file '/home/richard/ProVANT/ProVANT_Simulator_Jazzy/build/provant_controlloop_test/test_results/provant_controlloop_test/launch_controlloop_test.launch.py.xunit.xml'
+  >>>
+build/provant_controlloop_test/test_results/provant_controlloop_test/launch_controlloop_test.launch.py.xunit.xml: 1 test, 0 errors, 1 failure, 0 skipped
+- provant_controlloop_test.TestControlLoopActive test_controlloop_reports_success
+  <<< failure message
+    Traceback (most recent call last):
+      File "/home/richard/ProVANT/ProVANT_Simulator_Jazzy/src/provant_simulator_tests/provant_controlloop_test/launch/controlloop_test.launch.py", line 126, in test_controlloop_reports_success
+        proc_output.assertWaitFor(
+      File "/opt/ros/jazzy/lib/python3.12/site-packages/launch_testing/io_handler.py", line 146, in assertWaitFor
+        assert success, 'Waiting for output timed out'
+               ^^^^^^^
+    AssertionError: Waiting for output timed out
+  >>>
+
+Summary: 2 tests, 0 errors, 2 failures, 0 skipped
