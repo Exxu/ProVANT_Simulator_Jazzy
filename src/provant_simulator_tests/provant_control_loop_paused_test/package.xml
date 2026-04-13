@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>provant_controlloop_test</name>
+  <name>provant_control_loop_paused_test</name>
   <version>0.1.0</version>
   <description>
     End-to-end temporal control loop integration test based on provant_temporal_loop_tests,

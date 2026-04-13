@@ -18,7 +18,7 @@ def _prepend_env_path(env_name: str, new_path: str) -> str:
 
 
 def generate_test_description():
-    test_pkg_share = get_package_share_directory("provant_controlloop_test")
+    test_pkg_share = get_package_share_directory("provant_control_loop_paused_test")
     ros_gz_sim_share = get_package_share_directory("ros_gz_sim")
     gz_plugins_prefix = get_package_prefix("provant_simulator_gz_plugins")
 
@@ -65,7 +65,7 @@ def generate_test_description():
     )
 
     fake_controller = Node(
-        package="provant_controlloop_test",
+        package="provant_control_loop_paused_test",
         executable="fake_controller_node",
         namespace="test_group",
         name="fake_controller_node",
@@ -74,7 +74,7 @@ def generate_test_description():
     )
 
     fake_disturbance = Node(
-        package="provant_controlloop_test",
+        package="provant_control_loop_paused_test",
         executable="fake_disturbance_node",
         namespace="test_group",
         name="fake_disturbance_node",
@@ -83,7 +83,7 @@ def generate_test_description():
     )
 
     tester = Node(
-        package="provant_controlloop_test",
+        package="provant_control_loop_paused_test",
         executable="controlloop_tester_node",
         name="controlloop_tester_node",
         output="screen",

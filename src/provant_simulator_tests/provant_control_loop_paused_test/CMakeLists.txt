@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(provant_controlloop_test CXX)
+project(provant_control_loop_paused_test CXX)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -40,7 +40,7 @@ install(DIRECTORY launch worlds DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(launch_testing_ament_cmake REQUIRED)
-  add_launch_test(launch/controlloop_test.launch.py TIMEOUT 60)
+  add_launch_test(launch/control_loop_paused_test.launch.py TIMEOUT 60)
 endif()
 
 ament_package()

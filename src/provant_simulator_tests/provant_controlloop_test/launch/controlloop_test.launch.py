@@ -43,13 +43,6 @@ def generate_test_description():
         parameters=[{"world_name": "temporal_loop_test", "timeout_ms": 3000}],
     )
 
-    simulation_manager = Node(
-        package="provant_simulator_simulation_manager",
-        executable="provant_simulator_simulation_manager_node",
-        name="simulation_manager",
-        output="screen",
-    )
-
     control_group = Node(
         package="provant_simulator_control_group_manager",
         executable="provant_simulator_control_group_manager",
@@ -88,17 +81,10 @@ def generate_test_description():
         name="controlloop_tester_node",
         output="screen",
         parameters=[{
-            "total_cycles": 6,
-            "request_period_ms": 300,
-            "compute_delay_ms": 20,
-            "startup_wait_ms": 1500,
-            "world_name": "temporal_loop_test",
-            "control_timeout_ms": 3000,
-            "stable_checks_required": 3,
-            "group_namespace": "/test_group",
-            "expected_step_dt_ns": 1000000,
-            "time_tolerance_ns": 0,
-            "control_period_steps": 3,
+            "step_clock_topic": "/test_group/step_clock",
+            "required_cycles": 5,
+            "startup_timeout_ms": 10000,
+            "cycle_timeout_ms": 2000,
         }],
     )
 
@@ -110,7 +96,6 @@ def generate_test_description():
             ),
             gazebo,
             bridge,
-            simulation_manager,
             control_group,
             fake_controller,
             fake_disturbance,
@@ -124,7 +109,7 @@ def generate_test_description():
 class TestControlLoopActive(unittest.TestCase):
     def test_controlloop_reports_success(self, proc_output, tester):
         proc_output.assertWaitFor(
-        expected_output='No new global step_clock observed after pause confirmation and without bootstrap. World remained paused.',
-        process=tester,
-        timeout=50.0,
+            expected_output="control_group_manager completed 5 free cycles successfully. OK.",
+            process=tester,
+            timeout=30.0,
         )
