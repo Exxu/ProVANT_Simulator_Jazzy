@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>provant_controller_zoh_loop_test</name>
+  <version>0.1.0</version>
+  <description>
+    End-to-end temporal control loop integration test for controller plus ZOH.
+  </description>
+
+  <maintainer email="openai@example.com">OpenAI</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>provant_simulator_interfaces</depend>
+  <depend>provant_simulator_controller</depend>
+
+  <depend>gz_transport_vendor</depend>
+  <depend>gz_msgs_vendor</depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>launch_testing</exec_depend>
+  <exec_depend>launch_testing_ament_cmake</exec_depend>
+
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>provant_simulator_gz_plugins</exec_depend>
+  <exec_depend>provant_simulator_step_command_bridge</exec_depend>
+  <exec_depend>provant_simulator_simulation_manager</exec_depend>
+  <exec_depend>provant_simulator_control_group_manager</exec_depend>
+  <exec_depend>provant_simulator_zoh</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
