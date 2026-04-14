@@ -449,8 +449,6 @@ private:
 
     bootstrap_reference_step_ = verification_reference_step_;
     bootstrap_reference_time_ns_ = verification_reference_time_ns_;
-    last_verified_actuator_step_ = bootstrap_reference_step_;
-    last_verified_actuator_time_ns_ = bootstrap_reference_time_ns_;
 
     pending_local_ticks_.clear();
     pending_references_.clear();
@@ -461,6 +459,9 @@ private:
     verified_actuator_msgs_ = 0;
     observed_direct_control_publish_ = false;
     observed_zoh_hold_publish_ = false;
+    has_verified_any_actuator_ = false;
+    last_verified_actuator_step_ = 0;
+    last_verified_actuator_time_ns_ = 0;
     capture_post_bootstrap_ = true;
     last_progress_time_ = now;
 
@@ -661,11 +662,26 @@ private:
   void processPendingActuatorMessages()
   {
     while (!pending_actuator_msgs_.empty()) {
+      if (validated_control_events_.empty()) {
+        return;
+      }
+
+      const auto first_captured_control_step = validated_control_events_.begin()->second.step;
       const auto msg = pending_actuator_msgs_.front();
       const auto step = msg.pheader.step;
       const auto time_ns = timeToNanoseconds(msg.pheader.timestamp);
 
       if (step <= bootstrap_reference_step_) {
+        pending_actuator_msgs_.pop_front();
+        continue;
+      }
+
+      if (step < first_captured_control_step) {
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Discarding stale actuator message on global_step=%u because the first captured post-bootstrap control step is %u. This actuator belongs to a pre-bootstrap hold value.",
+          step,
+          first_captured_control_step);
         pending_actuator_msgs_.pop_front();
         continue;
       }
@@ -676,38 +692,55 @@ private:
 
       const auto * control_event = latestControlEventForStep(step);
       if (control_event == nullptr) {
-        return;
-      }
-
-      if (step <= last_verified_actuator_step_) {
-        pending_actuator_msgs_.pop_front();
-        continue;
-      }
-
-      if (step != last_verified_actuator_step_ + 1U) {
         RCLCPP_ERROR(
           this->get_logger(),
-          "Actuator step sequence mismatch. previous=%u current=%u last_global_step=%u",
-          last_verified_actuator_step_,
+          "No validated control event found for actuator message on global_step=%u. first_captured_control_step=%u validated_control_events=%zu",
           step,
-          last_global_step_);
+          first_captured_control_step,
+          validated_control_events_.size());
         fail();
         return;
       }
 
-      const auto observed_dt_ns = time_ns - last_verified_actuator_time_ns_;
-      const auto time_error_ns = std::llabs(observed_dt_ns - expected_step_dt_ns_);
-      if (time_error_ns > time_tolerance_ns_) {
-        RCLCPP_ERROR(
-          this->get_logger(),
-          "Unexpected actuator timestamp increment. previous_time_ns=%ld current_time_ns=%ld observed_dt_ns=%ld expected_dt_ns=%ld tolerance_ns=%ld",
-          static_cast<long>(last_verified_actuator_time_ns_),
-          static_cast<long>(time_ns),
-          static_cast<long>(observed_dt_ns),
-          static_cast<long>(expected_step_dt_ns_),
-          static_cast<long>(time_tolerance_ns_));
-        fail();
-        return;
+      if (has_verified_any_actuator_) {
+        if (step <= last_verified_actuator_step_) {
+          pending_actuator_msgs_.pop_front();
+          continue;
+        }
+
+        if (step != last_verified_actuator_step_ + 1U) {
+          RCLCPP_ERROR(
+            this->get_logger(),
+            "Actuator step sequence mismatch. previous=%u current=%u last_global_step=%u",
+            last_verified_actuator_step_,
+            step,
+            last_global_step_);
+          fail();
+          return;
+        }
+
+        const auto observed_dt_ns = time_ns - last_verified_actuator_time_ns_;
+        const auto time_error_ns = std::llabs(observed_dt_ns - expected_step_dt_ns_);
+        if (time_error_ns > time_tolerance_ns_) {
+          RCLCPP_ERROR(
+            this->get_logger(),
+            "Unexpected actuator timestamp increment. previous_time_ns=%ld current_time_ns=%ld observed_dt_ns=%ld expected_dt_ns=%ld tolerance_ns=%ld",
+            static_cast<long>(last_verified_actuator_time_ns_),
+            static_cast<long>(time_ns),
+            static_cast<long>(observed_dt_ns),
+            static_cast<long>(expected_step_dt_ns_),
+            static_cast<long>(time_tolerance_ns_));
+          fail();
+          return;
+        }
+      } else {
+        if (step > first_captured_control_step) {
+          RCLCPP_WARN(
+            this->get_logger(),
+            "Starting actuator verification at global_step=%u. First captured control step was %u.",
+            step,
+            first_captured_control_step);
+        }
       }
 
       const double expected_effort = control_event->expected_effort;
@@ -732,6 +765,7 @@ private:
       }
 
       ++verified_actuator_msgs_;
+      has_verified_any_actuator_ = true;
       last_verified_actuator_step_ = step;
       last_verified_actuator_time_ns_ = time_ns;
       last_progress_time_ = this->now();
@@ -828,6 +862,7 @@ private:
   bool capture_post_bootstrap_{false};
   bool observed_direct_control_publish_{false};
   bool observed_zoh_hold_publish_{false};
+  bool has_verified_any_actuator_{false};
 
   double reference_tolerance_{1e-9};
   double effort_tolerance_{1e-9};
