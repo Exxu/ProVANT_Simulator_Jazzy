@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 #include <thread>
-#include <vector>
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
@@ -38,7 +37,7 @@ public:
     no_step_verification_ms_ = this->declare_parameter<int>("no_step_verification_ms", 1000);
     control_timeout_ms_ = this->declare_parameter<int>("control_timeout_ms", 3000);
     required_actuator_msgs_ = this->declare_parameter<int>("required_actuator_msgs", 7);
-    stable_checks_required_ = this->declare_parameter<int>("stable_checks_required", 3);
+    pause_quiet_period_ms_ = this->declare_parameter<int>("pause_quiet_period_ms", 600);
     control_period_steps_ = this->declare_parameter<int>("control_period_steps", 3);
     expected_step_dt_ns_ = this->declare_parameter<int64_t>("expected_step_dt_ns", 1000000LL);
     time_tolerance_ns_ = this->declare_parameter<int64_t>("time_tolerance_ns", 0LL);
@@ -50,17 +49,12 @@ public:
 
     global_step_clock_sub_ = this->create_subscription<StepClockMsg>(
       "/provant_simulator/step_clock",
-      rclcpp::QoS(50),
+      rclcpp::QoS(100),
       std::bind(&ControllerZohTesterNode::onGlobalStepClock, this, std::placeholders::_1));
-
-    local_step_clock_sub_ = this->create_subscription<StepClockMsg>(
-      normalizeTopic(group_namespace_, "/step_clock"),
-      rclcpp::QoS(50),
-      std::bind(&ControllerZohTesterNode::onLocalStepClock, this, std::placeholders::_1));
 
     actuator_sub_ = this->create_subscription<ActuatorMsg>(
       normalizeTopic(group_namespace_, "/" + actuator_topic_),
-      rclcpp::QoS(50),
+      rclcpp::QoS(100),
       std::bind(&ControllerZohTesterNode::onActuator, this, std::placeholders::_1));
 
     simulation_state_sub_ = this->create_subscription<std_msgs::msg::String>(
@@ -70,7 +64,7 @@ public:
 
     manager_step_sub_ = this->create_subscription<std_msgs::msg::Empty>(
       "/provant_simulator/step",
-      rclcpp::QoS(50),
+      rclcpp::QoS(100),
       std::bind(&ControllerZohTesterNode::onManagerStep, this, std::placeholders::_1));
 
     set_state_pub_ = this->create_publisher<std_msgs::msg::String>(
@@ -153,6 +147,8 @@ private:
     }
 
     received_first_clock_ = true;
+    received_any_global_clock_ = true;
+    last_global_clock_wall_time_ = this->now();
 
     if (new_step != last_global_step_) {
       step_changed_since_last_check_ = true;
@@ -175,54 +171,6 @@ private:
       fail();
       return;
     }
-  }
-
-  void onLocalStepClock(const StepClockMsg::SharedPtr msg)
-  {
-    if (!capture_post_bootstrap_) {
-      return;
-    }
-
-    if (msg->step <= bootstrap_reference_step_) {
-      return;
-    }
-
-    if (!local_control_steps_.empty()) {
-      const auto previous_step = local_control_steps_.back();
-      if (msg->step <= previous_step) {
-        RCLCPP_ERROR(
-          this->get_logger(),
-          "Local control step regressed or repeated. previous=%u new=%u",
-          previous_step,
-          msg->step);
-        fail();
-        return;
-      }
-
-      const auto delta = static_cast<int>(msg->step - previous_step);
-      if (delta != control_period_steps_) {
-        RCLCPP_ERROR(
-          this->get_logger(),
-          "Unexpected control update spacing. previous=%u new=%u delta=%d expected=%d",
-          previous_step,
-          msg->step,
-          delta,
-          control_period_steps_);
-        fail();
-        return;
-      }
-    }
-
-    local_control_steps_.push_back(msg->step);
-    ++control_update_count_;
-    last_progress_time_ = this->now();
-
-    RCLCPP_INFO(
-      this->get_logger(),
-      "Observed local control step=%u control_updates=%d phase=%s",
-      msg->step,
-      control_update_count_,
-      phaseName(phase_));
   }
 
   void onActuator(const ActuatorMsg::SharedPtr msg)
@@ -325,15 +273,15 @@ private:
       return;
     }
 
-    stable_step_reference_ = last_global_step_;
-    stable_checks_count_ = 0;
+    pause_request_wall_time_ = this->now();
     step_changed_since_last_check_ = false;
     phase_ = Phase::WAITING_WORLD_TO_STABILIZE;
-    phase_start_time_ = this->now();
+    phase_start_time_ = pause_request_wall_time_;
 
     RCLCPP_INFO(
       this->get_logger(),
-      "Pause requested. Waiting for absence of new global step_clock messages. current_step=%u current_time_ns=%ld",
+      "Pause requested. Waiting for %d ms without new global step_clock messages. current_step=%u current_time_ns=%ld",
+      pause_quiet_period_ms_,
       last_global_step_,
       static_cast<long>(last_global_time_ns_));
   }
@@ -346,29 +294,23 @@ private:
       return;
     }
 
-    if (step_changed_since_last_check_) {
-      stable_step_reference_ = last_global_step_;
-      stable_checks_count_ = 0;
-      step_changed_since_last_check_ = false;
+    rclcpp::Time quiet_reference = pause_request_wall_time_;
+    if (received_any_global_clock_ && last_global_clock_wall_time_ > quiet_reference) {
+      quiet_reference = last_global_clock_wall_time_;
+    }
+
+    const auto quiet_ms = (now - quiet_reference).nanoseconds() / 1000000;
+    if (quiet_ms < pause_quiet_period_ms_) {
       return;
     }
 
-    if (last_global_step_ == stable_step_reference_) {
-      ++stable_checks_count_;
-    } else {
-      stable_step_reference_ = last_global_step_;
-      stable_checks_count_ = 0;
-      return;
-    }
-
-    if (stable_checks_count_ >= stable_checks_required_) {
-      phase_ = Phase::WAITING_COMPONENTS_TO_SETTLE;
-      phase_start_time_ = now;
-      RCLCPP_INFO(
-        this->get_logger(),
-        "World appears paused. Waiting %d ms for control_group/controller/ZOH registration and connections.",
-        startup_after_pause_ms_);
-    }
+    phase_ = Phase::WAITING_COMPONENTS_TO_SETTLE;
+    phase_start_time_ = now;
+    RCLCPP_INFO(
+      this->get_logger(),
+      "World appears paused. No new global step_clock for %ld ms. Waiting %d ms for control_group/controller/ZOH registration and connections.",
+      static_cast<long>(quiet_ms),
+      startup_after_pause_ms_);
   }
 
   void handleWaitingComponentsToSettle(const rclcpp::Time & now)
@@ -398,6 +340,7 @@ private:
     if (last_simulation_state_ == "running") {
       verification_reference_step_ = last_global_step_;
       verification_reference_time_ns_ = last_global_time_ns_;
+      verification_reference_wall_time_ = now;
       step_changed_since_last_check_ = false;
 
       phase_ = Phase::VERIFYING_NO_NEW_STEP_CLOCK_AFTER_START;
@@ -419,7 +362,8 @@ private:
 
   void handleVerifyingNoNewStepClockAfterStart(const rclcpp::Time & now)
   {
-    if ((now - phase_start_time_).nanoseconds() / 1000000 < no_step_verification_ms_) {
+    const auto quiet_ms = (now - verification_reference_wall_time_).nanoseconds() / 1000000;
+    if (quiet_ms < no_step_verification_ms_) {
       return;
     }
 
@@ -428,7 +372,8 @@ private:
 
     RCLCPP_INFO(
       this->get_logger(),
-      "No new global step_clock arrived after start. Sending one bootstrap /provant_simulator/step. reference_step=%u reference_time_ns=%ld",
+      "No new global step_clock arrived for %ld ms after start. Sending one bootstrap /provant_simulator/step. reference_step=%u reference_time_ns=%ld",
+      static_cast<long>(quiet_ms),
       verification_reference_step_,
       static_cast<long>(verification_reference_time_ns_));
   }
@@ -442,15 +387,12 @@ private:
     bootstrap_reference_time_ns_ = verification_reference_time_ns_;
     last_verified_actuator_step_ = bootstrap_reference_step_;
     last_verified_actuator_time_ns_ = bootstrap_reference_time_ns_;
-    verification_baseline_step_ = bootstrap_reference_step_;
-    verification_baseline_time_ns_ = bootstrap_reference_time_ns_;
 
-    local_control_steps_.clear();
     pending_actuator_msgs_.clear();
     verified_actuator_msgs_ = 0;
-    control_update_count_ = 0;
     observed_direct_control_publish_ = false;
     observed_zoh_hold_publish_ = false;
+    control_schedule_anchored_ = false;
     capture_post_bootstrap_ = true;
     last_progress_time_ = now;
 
@@ -473,7 +415,7 @@ private:
 
       RCLCPP_INFO(
         this->get_logger(),
-        "First post-bootstrap global step_clock observed. global_step=%u global_time_ns=%ld. Starting controller + ZOH verification.",
+        "First post-bootstrap global step_clock observed. global_step=%u global_time_ns=%ld. Starting controller + ZOH verification using GLOBAL step_clock only.",
         last_global_step_,
         static_cast<long>(last_global_time_ns_));
       return;
@@ -496,10 +438,13 @@ private:
     if ((now - last_progress_time_).seconds() > 5.0) {
       RCLCPP_ERROR(
         this->get_logger(),
-        "Timed out waiting for controller/ZOH progress. verified_actuator_msgs=%d control_updates=%d pending_actuator_msgs=%zu",
+        "Timed out waiting for controller/ZOH progress. verified_actuator_msgs=%d pending_actuator_msgs=%zu anchored=%s first_control_step=%u last_verified_step=%u last_global_step=%u",
         verified_actuator_msgs_,
-        control_update_count_,
-        pending_actuator_msgs_.size());
+        pending_actuator_msgs_.size(),
+        control_schedule_anchored_ ? "true" : "false",
+        first_control_step_,
+        last_verified_actuator_step_,
+        last_global_step_);
       fail();
       return;
     }
@@ -507,18 +452,18 @@ private:
     if (
       verified_actuator_msgs_ >= required_actuator_msgs_ &&
       observed_direct_control_publish_ &&
-      observed_zoh_hold_publish_ &&
-      control_update_count_ >= 2)
+      observed_zoh_hold_publish_)
     {
       done_ = true;
       exit_code_ = EXIT_SUCCESS;
       phase_ = Phase::SUCCESS;
       RCLCPP_INFO(
         this->get_logger(),
-        "provant_controller_zoh_loop_test succeeded. verified_actuator_msgs=%d control_updates=%d manager_step_count=%d",
+        "provant_controller_zoh_loop_test succeeded. verified_actuator_msgs=%d manager_step_count=%d first_control_step=%u last_verified_step=%u",
         verified_actuator_msgs_,
-        control_update_count_,
-        manager_step_count_);
+        manager_step_count_,
+        first_control_step_,
+        last_verified_actuator_step_);
       rclcpp::shutdown();
     }
   }
@@ -530,29 +475,22 @@ private:
       const auto step = msg.pheader.step;
       const auto time_ns = timeToNanoseconds(msg.pheader.timestamp);
 
-      if (step <= verification_baseline_step_) {
+      if (step <= bootstrap_reference_step_) {
         pending_actuator_msgs_.pop_front();
         continue;
       }
 
-      const auto it = std::upper_bound(
-        local_control_steps_.cbegin(),
-        local_control_steps_.cend(),
-        step);
-
-      if (it == local_control_steps_.cbegin()) {
+      if (step > last_global_step_) {
         return;
       }
-
-      const auto control_step = *std::prev(it);
-      const auto expected_effort = static_cast<double>(control_step);
 
       if (step != last_verified_actuator_step_ + 1) {
         RCLCPP_ERROR(
           this->get_logger(),
-          "Actuator step sequence mismatch. previous=%u current=%u",
+          "Actuator step sequence mismatch. previous=%u current=%u last_global_step=%u",
           last_verified_actuator_step_,
-          step);
+          step,
+          last_global_step_);
         fail();
         return;
       }
@@ -573,19 +511,59 @@ private:
         return;
       }
 
-      if (std::abs(msg.effort - expected_effort) > 1e-9) {
+      bool is_control_step = false;
+      uint32_t expected_control_step = 0;
+
+      if (!control_schedule_anchored_) {
+        if (std::abs(msg.effort - static_cast<double>(step)) > effort_tolerance_) {
+          RCLCPP_ERROR(
+            this->get_logger(),
+            "The first actuator message after bootstrap was not a control update. step=%u time_ns=%ld effort=%f expected=%f",
+            step,
+            static_cast<long>(time_ns),
+            msg.effort,
+            static_cast<double>(step));
+          fail();
+          return;
+        }
+
+        control_schedule_anchored_ = true;
+        first_control_step_ = step;
+        expected_control_step = step;
+        is_control_step = true;
+      } else {
+        if (step < first_control_step_) {
+          RCLCPP_ERROR(
+            this->get_logger(),
+            "Observed actuator step smaller than the anchored first control step. first_control_step=%u step=%u",
+            first_control_step_,
+            step);
+          fail();
+          return;
+        }
+
+        const auto offset = static_cast<int>(step - first_control_step_);
+        const auto control_index = offset / control_period_steps_;
+        expected_control_step = first_control_step_ + static_cast<uint32_t>(control_index * control_period_steps_);
+        is_control_step = (offset % control_period_steps_) == 0;
+      }
+
+      const auto expected_effort = static_cast<double>(expected_control_step);
+      if (std::abs(msg.effort - expected_effort) > effort_tolerance_) {
         RCLCPP_ERROR(
           this->get_logger(),
-          "Unexpected actuator effort on step=%u. observed=%f expected=%f (held from control_step=%u)",
+          "Unexpected actuator effort on global step=%u. observed=%f expected=%f expected_source=%s held_control_step=%u first_control_step=%u",
           step,
           msg.effort,
           expected_effort,
-          control_step);
+          is_control_step ? "controller" : "zoh",
+          expected_control_step,
+          first_control_step_);
         fail();
         return;
       }
 
-      if (control_step == step) {
+      if (is_control_step) {
         observed_direct_control_publish_ = true;
       } else {
         observed_zoh_hold_publish_ = true;
@@ -598,14 +576,15 @@ private:
 
       RCLCPP_INFO(
         this->get_logger(),
-        "Validated actuator msg %d/%d step=%u time_ns=%ld effort=%f source=%s held_control_step=%u",
+        "Validated actuator msg %d/%d global_step=%u time_ns=%ld effort=%f source=%s expected_control_step=%u last_global_step=%u",
         verified_actuator_msgs_,
         required_actuator_msgs_,
         step,
         static_cast<long>(time_ns),
         msg.effort,
-        control_step == step ? "controller" : "zoh",
-        control_step);
+        is_control_step ? "controller" : "zoh",
+        expected_control_step,
+        last_global_step_);
 
       pending_actuator_msgs_.pop_front();
     }
@@ -655,46 +634,14 @@ private:
     rclcpp::shutdown();
   }
 
-  const char * phaseName(Phase phase) const
-  {
-    switch (phase) {
-      case Phase::WAITING_FIRST_CLOCK:
-        return "WAITING_FIRST_CLOCK";
-      case Phase::REQUESTING_INITIAL_PAUSE:
-        return "REQUESTING_INITIAL_PAUSE";
-      case Phase::WAITING_WORLD_TO_STABILIZE:
-        return "WAITING_WORLD_TO_STABILIZE";
-      case Phase::WAITING_COMPONENTS_TO_SETTLE:
-        return "WAITING_COMPONENTS_TO_SETTLE";
-      case Phase::STARTING_SIMULATION:
-        return "STARTING_SIMULATION";
-      case Phase::WAITING_RUNNING_STATE:
-        return "WAITING_RUNNING_STATE";
-      case Phase::VERIFYING_NO_NEW_STEP_CLOCK_AFTER_START:
-        return "VERIFYING_NO_NEW_STEP_CLOCK_AFTER_START";
-      case Phase::BOOTSTRAPPING_STEP:
-        return "BOOTSTRAPPING_STEP";
-      case Phase::WAITING_FIRST_POST_BOOTSTRAP_CLOCK:
-        return "WAITING_FIRST_POST_BOOTSTRAP_CLOCK";
-      case Phase::VERIFYING:
-        return "VERIFYING";
-      case Phase::SUCCESS:
-        return "SUCCESS";
-      case Phase::FAILURE:
-        return "FAILURE";
-    }
-    return "UNKNOWN";
-  }
-
   int startup_wait_ms_{1500};
   int startup_after_pause_ms_{1500};
   int no_step_verification_ms_{1000};
   int control_timeout_ms_{3000};
   int required_actuator_msgs_{7};
-  int stable_checks_required_{3};
+  int pause_quiet_period_ms_{600};
   int control_period_steps_{3};
   int verified_actuator_msgs_{0};
-  int control_update_count_{0};
   int manager_step_count_{0};
   int exit_code_{EXIT_FAILURE};
 
@@ -703,23 +650,25 @@ private:
   int64_t last_global_time_ns_{0LL};
   int64_t verification_reference_time_ns_{0LL};
   int64_t bootstrap_reference_time_ns_{0LL};
-  int64_t verification_baseline_time_ns_{0LL};
   int64_t last_verified_actuator_time_ns_{0LL};
 
   uint32_t last_global_step_{0};
-  uint32_t stable_step_reference_{0};
   uint32_t verification_reference_step_{0};
   uint32_t bootstrap_reference_step_{0};
-  uint32_t verification_baseline_step_{0};
   uint32_t last_verified_actuator_step_{0};
+  uint32_t first_control_step_{0};
 
   bool done_{false};
   bool received_first_clock_{false};
   bool printed_first_clock_{false};
   bool step_changed_since_last_check_{false};
+  bool received_any_global_clock_{false};
   bool capture_post_bootstrap_{false};
   bool observed_direct_control_publish_{false};
   bool observed_zoh_hold_publish_{false};
+  bool control_schedule_anchored_{false};
+
+  double effort_tolerance_{1e-9};
 
   std::string world_name_;
   std::string group_namespace_;
@@ -727,20 +676,20 @@ private:
   std::string control_service_;
   std::string last_simulation_state_;
 
-  std::size_t stable_checks_count_{0};
   Phase phase_{Phase::WAITING_FIRST_CLOCK};
 
   rclcpp::Time start_time_;
   rclcpp::Time phase_start_time_;
   rclcpp::Time last_progress_time_;
+  rclcpp::Time last_global_clock_wall_time_;
+  rclcpp::Time pause_request_wall_time_;
+  rclcpp::Time verification_reference_wall_time_;
 
-  std::vector<uint32_t> local_control_steps_;
   std::deque<ActuatorMsg> pending_actuator_msgs_;
 
   gz::transport::Node gz_node_;
 
   rclcpp::Subscription<StepClockMsg>::SharedPtr global_step_clock_sub_;
-  rclcpp::Subscription<StepClockMsg>::SharedPtr local_step_clock_sub_;
   rclcpp::Subscription<ActuatorMsg>::SharedPtr actuator_sub_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr simulation_state_sub_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr manager_step_sub_;
