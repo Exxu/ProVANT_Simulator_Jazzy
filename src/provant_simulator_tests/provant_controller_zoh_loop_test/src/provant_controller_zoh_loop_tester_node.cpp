@@ -484,12 +484,67 @@ private:
         return;
       }
 
+      if (!control_schedule_anchored_) {
+        const auto expected_control_effort = static_cast<double>(step);
+        const auto looks_like_control =
+          std::abs(msg.effort - expected_control_effort) <= effort_tolerance_;
+
+        if (!looks_like_control) {
+          RCLCPP_INFO(
+            this->get_logger(),
+            "Ignoring pre-anchor actuator msg. global_step=%u time_ns=%ld effort=%f last_global_step=%u bootstrap_reference_step=%u",
+            step,
+            static_cast<long>(time_ns),
+            msg.effort,
+            last_global_step_,
+            bootstrap_reference_step_);
+          pending_actuator_msgs_.pop_front();
+          continue;
+        }
+
+        control_schedule_anchored_ = true;
+        first_control_step_ = step;
+        observed_direct_control_publish_ = true;
+        ++verified_actuator_msgs_;
+        last_verified_actuator_step_ = step;
+        last_verified_actuator_time_ns_ = time_ns;
+        last_progress_time_ = this->now();
+
+        RCLCPP_INFO(
+          this->get_logger(),
+          "Anchored control schedule on first CONTROL actuator msg %d/%d global_step=%u time_ns=%ld effort=%f last_global_step=%u",
+          verified_actuator_msgs_,
+          required_actuator_msgs_,
+          step,
+          static_cast<long>(time_ns),
+          msg.effort,
+          last_global_step_);
+
+        pending_actuator_msgs_.pop_front();
+
+        if (
+          verified_actuator_msgs_ >= required_actuator_msgs_ &&
+          observed_direct_control_publish_ &&
+          observed_zoh_hold_publish_)
+        {
+          return;
+        }
+
+        continue;
+      }
+
+      if (step <= last_verified_actuator_step_) {
+        pending_actuator_msgs_.pop_front();
+        continue;
+      }
+
       if (step != last_verified_actuator_step_ + 1) {
         RCLCPP_ERROR(
           this->get_logger(),
-          "Actuator step sequence mismatch. previous=%u current=%u last_global_step=%u",
+          "Actuator step sequence mismatch after control anchoring. previous=%u current=%u first_control_step=%u last_global_step=%u",
           last_verified_actuator_step_,
           step,
+          first_control_step_,
           last_global_step_);
         fail();
         return;
@@ -511,42 +566,21 @@ private:
         return;
       }
 
-      bool is_control_step = false;
-      uint32_t expected_control_step = 0;
-
-      if (!control_schedule_anchored_) {
-        if (std::abs(msg.effort - static_cast<double>(step)) > effort_tolerance_) {
-          RCLCPP_ERROR(
-            this->get_logger(),
-            "The first actuator message after bootstrap was not a control update. step=%u time_ns=%ld effort=%f expected=%f",
-            step,
-            static_cast<long>(time_ns),
-            msg.effort,
-            static_cast<double>(step));
-          fail();
-          return;
-        }
-
-        control_schedule_anchored_ = true;
-        first_control_step_ = step;
-        expected_control_step = step;
-        is_control_step = true;
-      } else {
-        if (step < first_control_step_) {
-          RCLCPP_ERROR(
-            this->get_logger(),
-            "Observed actuator step smaller than the anchored first control step. first_control_step=%u step=%u",
-            first_control_step_,
-            step);
-          fail();
-          return;
-        }
-
-        const auto offset = static_cast<int>(step - first_control_step_);
-        const auto control_index = offset / control_period_steps_;
-        expected_control_step = first_control_step_ + static_cast<uint32_t>(control_index * control_period_steps_);
-        is_control_step = (offset % control_period_steps_) == 0;
+      if (step < first_control_step_) {
+        RCLCPP_ERROR(
+          this->get_logger(),
+          "Observed actuator step smaller than the anchored first control step. first_control_step=%u step=%u",
+          first_control_step_,
+          step);
+        fail();
+        return;
       }
+
+      const auto offset = static_cast<int>(step - first_control_step_);
+      const auto control_index = offset / control_period_steps_;
+      const auto expected_control_step =
+        first_control_step_ + static_cast<uint32_t>(control_index * control_period_steps_);
+      const auto is_control_step = (offset % control_period_steps_) == 0;
 
       const auto expected_effort = static_cast<double>(expected_control_step);
       if (std::abs(msg.effort - expected_effort) > effort_tolerance_) {
@@ -587,6 +621,14 @@ private:
         last_global_step_);
 
       pending_actuator_msgs_.pop_front();
+
+      if (
+        verified_actuator_msgs_ >= required_actuator_msgs_ &&
+        observed_direct_control_publish_ &&
+        observed_zoh_hold_publish_)
+      {
+        return;
+      }
     }
   }
 
